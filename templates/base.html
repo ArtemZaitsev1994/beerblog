@@ -59,10 +59,10 @@
 
   <!-- Add your site or app content here -->
     <div class="hero-full-container background-image-container white-text-container">
-{% block content %}
-  <!-- Add your site or app content here -->
+      {% block content %}
+        <!-- Add your site or app content here -->
 
-{% endblock %}
+      {% endblock %}
     </div>
 
 <script>
@@ -72,8 +72,13 @@
   });
 </script>
 
-{% block footer %}
+
+<script type="text/javascript" src="{{ url_for('static', path='./main.70a66962.js') }}"></script>
+</body>
+{% block pagination %}
 {% endblock %}
 
-<script type="text/javascript" src="{{ url_for('static', path='./main.70a66962.js') }}"></script></body>
+
+{% block footer %}
+{% endblock %}
 </html>

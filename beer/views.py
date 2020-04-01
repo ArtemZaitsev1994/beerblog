@@ -23,8 +23,7 @@ class CommonResponse(BaseModel):
 @router.get('/', name='beer')
 async def beer_list(request: Request, page: int = 1):
     # await request.app.mongo['beer'].clear_db()
-    beer, pagination = await request.app.mongo['beer'].get_all()
-    print(beer)
+    beer, pagination = await request.app.mongo['beer'].get_all(page=page)
     return templates.TemplateResponse("beer.html", {"request": request, 'beer': beer, 'pagination': pagination})
 
 
@@ -50,12 +49,13 @@ async def add_beer(
     *,
     name: str = Form(...),
     rate: int = Form(...),
-    manufacturer: str = Form(...),
-    fortress: int = Form(...),
-    gravity: int = Form(...),
-    review: str = Form(...),
-    others: str = Form(...),
-    photos: List[UploadFile] = File(...)
+    manufacturer: str = Form(''),
+    fortress: int = Form(''),
+    gravity: int = Form(''),
+    ibu: int = Form(''),
+    review: str = Form(''),
+    others: str = Form(''),
+    photos: List[UploadFile] = File(None)
 ):
     data = {
         'name': name,
@@ -70,6 +70,8 @@ async def add_beer(
     photo_dir = request.app.beer_photo_path
     filenames = []
     for photo in photos:
+        if photo.filename == '':
+            break
         filename = uuid4().hex
         async with AIOFile(os.path.join(photo_dir, filename), 'wb') as f:
             await f.write(await photo.read())
