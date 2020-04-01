@@ -11,19 +11,20 @@ $(document).ready(function(){
 
 
     send_review = function(){
+        console.log(1111)
         errors = ''
 
         if ($('#name').val().length < 1){
             errors += 'Добавь название.<br>'
         }
         if (isNaN(parseInt($('#fortress').val(), 10))) {
-            errors += 'Крепость должна быть числом'
+            errors += 'Крепость должна быть числом.<br>'
         }
         if (isNaN(parseInt($('#gravity').val(), 10))){
-            errors += 'Плотность должна быть числом'
+            errors += 'Плотность должна быть числом.<br>'
         }
         if (isNaN(parseInt($('#rate').val(), 10))){
-            errors += 'Плотность должна быть числом'
+            errors += 'Плотность должна быть числом.<br>'
         }
 
         if (errors){
@@ -31,21 +32,36 @@ $(document).ready(function(){
             return
         }
 
-        data = {
-            'name': $('#name').val(),
-            'manufacturer': $('#manufacturer').val(),
-            'fortress': $('#fortress').val(),
-            'gravity': $('#gravity').val(),
-            'rate': $('#rate').val(),
-            'review': $('#review').val(),
-            'others': $('#others').val(),
-        }
+        var data = new FormData();
 
+        data.append('name', $('#name').val())
+        data.append('manufacturer', $('#manufacturer').val())
+        data.append('fortress', $('#fortress').val())
+        data.append('gravity', $('#gravity').val())
+        data.append('rate', $('#rate').val())
+        data.append('review', $('#review').val())
+        data.append('others', $('#others').val())
+        data.append('photo', $('#photo')[0].files[0])
+        // data1 = {
+        //     'name': $('#name').val(),
+        //     'manufacturer': $('#manufacturer').val(),
+        //     'fortress': $('#fortress').val(),
+        //     'gravity': $('#gravity').val(),
+        //     'rate': $('#rate').val(),
+        //     'review': $('#review').val(),
+        //     'others': $('#others').val(),
+        //     'photo': $('#photo')[0].files[0],
+        // }
+
+        console.log(data)
         $.ajax({
             dataType: 'json',
-            url: '/add_beer',
+            url: '/beer/add_beer',
             type: 'POST',
-            data: JSON.stringify(q_data),
+            // data: JSON.stringify(data),
+            data: data,
+            processData: false,
+            contentType: 'multipart/form-data',
             success: function(data) {
                 console.log(data)
                 showSucces()
@@ -55,13 +71,13 @@ $(document).ready(function(){
 
     }
 
-    $('#submit').click(send_question)
-    $('input').click(send_question)
+    $('#submit').click(send_review)
     $('textarea').on('keydown', function(e){
         if (e.keyCode == 13 & !e.shiftKey) {
             e.preventDefault()
-            send_question()
+            send_review()
         }
     })
+
 
 })

@@ -1,4 +1,7 @@
-from os.path import isfile
+import os
+
+from fastapi.applications import FastAPI
+from fastapi.staticfiles import StaticFiles
 from envparse import env
 from envparse import ConfigurationError
 
@@ -9,7 +12,10 @@ ADMIN_COLLECTION = 'admin'
 
 STATIC_PATH = '/static'
 
-if isfile('.env'):
+BASEDIR = os.path.dirname(os.path.realpath(__file__))
+PHOTO_PATH = os.path.join(BASEDIR, 'static/photo/')
+
+if os.path.isfile('.env'):
     env.read_envfile('.env')
 
     # DEBUG = env.bool('DEBUG', default=False)
@@ -29,3 +35,13 @@ if isfile('.env'):
     #     ADMIN_PASSWORD, ADMIN_LOGIN = None, None
 else:
     raise SystemExit('Create an env-file please.!')
+
+
+def setup_app(app: FastAPI):
+    app.mount("/static", StaticFiles(directory="templates"), name="static")
+    app.mount("/photo", StaticFiles(directory="static/photo"), name="photo")
+
+    BASEDIR = os.path.dirname(os.path.realpath(__file__))
+    PHOTO_PATH = os.path.join(BASEDIR, 'static/photo/')
+
+    app.beer_photo_path = os.path.join(PHOTO_PATH, 'beer')

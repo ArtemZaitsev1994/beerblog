@@ -29,7 +29,11 @@ class Alcohol:
 
         return qs, pagination
 
+    async def get_all_documents(self):
+        return await self.collection.find().to_list(length=None)
+
     async def insert_item(self, data):
+        print(data)
         return await self.collection.insert_one(data)
 
     async def clear_db(self):

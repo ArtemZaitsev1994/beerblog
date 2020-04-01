@@ -15,97 +15,20 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-xs-12 col-md-4">
-                <img src="./assets/images/img-02.jpg" alt="" class="img-responsive">
-                <img src="{{ url_for('static', path='./assets/images/work01-hover.jpg') }}" alt="" class="img-responsive">
-                <h3 class="text-center">Consectetur</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sit amet consectetur dolor. Phasellus ut
-                    lacus tellus. In pretium lobortis blandit.</p>
-            </div>
-
-            <div class="col-xs-12 col-md-4">
-                <img src="{{ url_for('static', path='./assets/images/work02-hover.jpg') }}" alt="" class="img-responsive">
-                <h3 class="text-center">Malesuada</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sit amet consectetur dolor. Phasellus ut
-                    lacus tellus. In pretium lobortis blandit.</p>
-            </div>
-            <div class="col-xs-12 col-md-4">
-                <img src="{{ url_for('static', path='./assets/images/work03-hover.jpg') }}" alt="" class="img-responsive">
-                <h3 class="text-center">Phasellus</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sit amet consectetur dolor. Phasellus ut
-                    lacus tellus. In pretium lobortis blandit.</p>
-            </div>
+            {% for b in beer %}
+                <div class="col-xs-12 col-md-4">
+                    <img src="{{ url_for('photo', path='./beer/' + b.photos.filenames[0]) }}" alt="" class="img-responsive">
+                    <h3 class="text-center">{{b.name}}</h3>
+                    <p>{{b.review}}</p>
+                    <p>{{b.manufacturer}}</p>
+                    <p>{{b.fortress}}</p>
+                    <p>{{b.gravity}}</p>
+                    <p>{{b.rate}}</p>
+                    <p>{{b.others}}</p>
+                </div>
+            {% endfor %}
         </div>
 
-        <div class="row">
-            <div class="col-xs-12 col-md-4">
-                <img src="./assets/images/img-02.jpg" alt="" class="img-responsive">
-                <img src="{{ url_for('static', path='./assets/images/work01-hover.jpg') }}" alt="" class="img-responsive">
-                <h3 class="text-center">Consectetur</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sit amet consectetur dolor. Phasellus ut
-                    lacus tellus. In pretium lobortis blandit.</p>
-            </div>
-
-            <div class="col-xs-12 col-md-4">
-                <img src="{{ url_for('static', path='./assets/images/work02-hover.jpg') }}" alt="" class="img-responsive">
-                <h3 class="text-center">Malesuada</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sit amet consectetur dolor. Phasellus ut
-                    lacus tellus. In pretium lobortis blandit.</p>
-            </div>
-            <div class="col-xs-12 col-md-4">
-                <img src="{{ url_for('static', path='./assets/images/work03-hover.jpg') }}" alt="" class="img-responsive">
-                <h3 class="text-center">Phasellus</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sit amet consectetur dolor. Phasellus ut
-                    lacus tellus. In pretium lobortis blandit.</p>
-            </div>
-        </div>
-
-
-        <div class="row">
-            <div class="col-xs-12 col-md-4">
-                <img src="./assets/images/img-02.jpg" alt="" class="img-responsive">
-                <img src="{{ url_for('static', path='./assets/images/work01-hover.jpg') }}" alt="" class="img-responsive">
-                <h3 class="text-center">Consectetur</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sit amet consectetur dolor. Phasellus ut
-                    lacus tellus. In pretium lobortis blandit.</p>
-            </div>
-
-            <div class="col-xs-12 col-md-4">
-                <img src="{{ url_for('static', path='./assets/images/work02-hover.jpg') }}" alt="" class="img-responsive">
-                <h3 class="text-center">Malesuada</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sit amet consectetur dolor. Phasellus ut
-                    lacus tellus. In pretium lobortis blandit.</p>
-            </div>
-            <div class="col-xs-12 col-md-4">
-                <img src="{{ url_for('static', path='./assets/images/work03-hover.jpg') }}" alt="" class="img-responsive">
-                <h3 class="text-center">Phasellus</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sit amet consectetur dolor. Phasellus ut
-                    lacus tellus. In pretium lobortis blandit.</p>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-xs-12 col-md-4">
-                <img src="./assets/images/img-02.jpg" alt="" class="img-responsive">
-                <img src="{{ url_for('static', path='./assets/images/work01-hover.jpg') }}" alt="" class="img-responsive">
-                <h3 class="text-center">Consectetur</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sit amet consectetur dolor. Phasellus ut
-                    lacus tellus. In pretium lobortis blandit.</p>
-            </div>
-
-            <div class="col-xs-12 col-md-4">
-                <img src="{{ url_for('static', path='./assets/images/work02-hover.jpg') }}" alt="" class="img-responsive">
-                <h3 class="text-center">Malesuada</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sit amet consectetur dolor. Phasellus ut
-                    lacus tellus. In pretium lobortis blandit.</p>
-            </div>
-            <div class="col-xs-12 col-md-4">
-                <img src="{{ url_for('static', path='./assets/images/work03-hover.jpg') }}" alt="" class="img-responsive">
-                <h3 class="text-center">Phasellus</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sit amet consectetur dolor. Phasellus ut
-                    lacus tellus. In pretium lobortis blandit.</p>
-            </div>
-        </div>
     </div>
 </div>
 {% endblock %}

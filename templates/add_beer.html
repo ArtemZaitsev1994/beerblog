@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<link href="{{ url_for('static', path='./slider.css') }}" rel="stylesheet">
 <div class="section-container">
     <div class="container">
       <div class="row">
@@ -11,42 +12,49 @@
           
           <div class="row">
             <div class="col-md-10 col-md-offset-1">
-               <form action="{{ url_for('add_beer') }}" class="reveal-content"  method="post" enctype="multipart/form-data" boundary="another cool CR">
+               <!-- <form id="beerForm" class="reveal-content"> -->
+                <form action="{{ url_for('add_beer') }}" enctype="multipart/form-data" method="post">
                   <div class="row">
                     <div class="col-md-7">
                       <div class="form-group">
-                        <input type="text" class="form-control" id="name" placeholder="Название">
+                        <input type="text" class="form-control" name="name" id="name" placeholder="Название">
                       </div>
                       <div class="form-group">
-                        <input type="text" class="form-control" id="manufacturer" placeholder="Производитель">
+                        <input type="text" class="form-control" name="manufacturer" id="manufacturer" placeholder="Производитель">
                       </div>
                       <div class="form-group"  style="display: flex;">
-                        <input type="text" class="form-control" id="fortress" placeholder="Крепость" onkeyup="this.value = this.value.replace(/[^\d]/g,'');">
-                        <input type="text" class="form-control" id="gravity" placeholder="Плотность" onkeyup="this.value = this.value.replace(/[^\d]/g,'');">
+                        <input type="text" class="form-control" name="fortress" id="fortress" placeholder="Крепость" onkeyup="this.value = this.value.replace(/[^\d]/g,'');">
+                        <input type="text" class="form-control" name="gravity" id="gravity" placeholder="Плотность" onkeyup="this.value = this.value.replace(/[^\d]/g,'');">
                       </div>
                       <div class="form-group">
-                        <textarea rows="5" class="form-control" id="review" placeholder="Описание"></textarea>
+                        <textarea rows="5" class="form-control" name="review" id="review" placeholder="Описание"></textarea>
                       </div>
 
-                      <div class="d-flex justify-content-center my-4">
-                        <div class="range-field w-75">
-                          <label for="rate">Обща оценка (от 1 до 100)</label>
-                          <input id="rate" class="border-0" type="range" min="0" max="100" />
-                        </div>
-                        <span class="font-weight-bold text-primary ml-2 mt-1 valueSpan"></span>
+
+                      <div id="slider">
+                      <output id="ratevalue">Оценка: 50</output>
+                      <input class="bar" type="range" name="rate" id="rate" value="50" min="0" max="100" onchange="ratevalue.value=`Оценка: ${value}`"/>
                       </div>
 
 
                       <div class="form-group">
-                        <textarea rows="5" class="form-control" id="others" placeholder="Примечение (за сколько брал, где и тд."></textarea>
+                        <textarea rows="5" class="form-control" name="others" id="others" placeholder="Примечение (за сколько брал, где и тд.)"></textarea>
+                      </div>
+
+                      <div class="form-group">
+                      <label for="photo">Загрузить фотографи</label>
+                      <input id="photo" name="photos" type="file" value="" />
+                      <br>
                       </div>
 
 
-                      <button type="submit" class="btn btn-default btn-lg">Send</button>
+                      <!-- <input class="btn btn-primary" id="submit" title="Отправить" type="button" value="Отправить"> -->
+
+                      <input type="submit" value="Отправить" />
+                      <div id="error" style="color: red;"></div>
+                      <div id="success" style="color: green;"></div>
+
                     </div>
-
-
-
 
                     <div class="col-md-5 address-container">
                       <ul class="list-unstyled">
@@ -54,13 +62,12 @@
                           <span class="fa-icon">
                             <i class="fa fa-phone" aria-hidden="true"></i>
                           </span>
-                          + 33 9 07 45 12 65
-                        </li>
+                          +7 (992) 00 88 615                        </li>
                         <li>
                           <span class="fa-icon">
                             <i class="fa fa-at" aria-hidden="true"></i>
                           </span>
-                          e-mail@mail.io
+                          artz1994@mail.ru
                         </li>
                         <li>
                           <span class="fa-icon">

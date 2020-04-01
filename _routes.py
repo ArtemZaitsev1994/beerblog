@@ -15,6 +15,7 @@ routes = [
 
 def set_routes(app: FastAPI):
     for route in routes:
+        print(route)
         app.include_router(
             route.router,
             prefix=route.prefix,
