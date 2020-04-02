@@ -6,6 +6,8 @@ services:
           - 9090:9090
         depends_on:
           - mongodb
+        volumes:
+          - ./static:/static/photo/beer
         environment:
           WAIT_HOSTS: mongodb:27017
 
@@ -18,5 +20,5 @@ services:
         volumes:
           - ./data/db:/data/db
         ports:
-            - 27018:27017
+            - 27019:27017
         command: mongod
