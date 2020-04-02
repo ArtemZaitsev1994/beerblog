@@ -42,15 +42,14 @@
             {% endfor %} -->
         </div>
 
-  {% if beer %}
+
   <link href="{{ url_for('static', path='./pagination.css') }}" rel="stylesheet">
     <div class="center">
-      <div class="pagination">
-      <a href="{{ url_for('beer') }}?page={{pagination.prev}}" class="{% if pagination.page <= 1 %}disabled{% endif %}">Previous</a>
-      <a href="{{ url_for('beer') }}?page={{pagination.next}}" class="{% if not pagination.has_next %}disabled{% endif %}">Next</a>
+      <div class="pagination" id="pagination">
+      <a class="get_beer_btn" id="prev_link">Previous</a>
+      <a class="get_beer_btn" id="next_link">Next</a>
       </div>
     </div>
-  {% endif %}
 
     </div>
 </div>

@@ -21,18 +21,23 @@ class CommonResponse(BaseModel):
 
 
 @router.get('/', name='beer')
-async def beer_list(request: Request, page: int = 1):
+async def beer_list(request: Request):
     # await request.app.mongo['beer'].clear_db()
     return templates.TemplateResponse("beer.html", {"request": request})
 
 
 @router.post('/get_beer', name='get_beer')
-async def get_beer(request: Request, page: int = 1):
+async def get_beer(request: Request, page: int = 1, q: str = ''):
     beer, pagination = await request.app.mongo['beer'].get_all(page=page)
     for b in beer:
         b['_id'] = str(b['_id'])
         if len(b['photos']['filenames']) == 0:
-            b['avatar'] = f'{request.app.beer_photo_path}/beer_default.png'
+            b['avatar'] = request.url_for("photo", path='./beer/beer_default.png')
+        else:
+            b['avatar'] = request.url_for('photo', path=f"./beer/{b['photos']['filenames'][0]}")
+    pagination['prev_link'] = request.url_for('get_beer') + f'?page={page-1}'
+    pagination['next_link'] = request.url_for('get_beer') + f'?page={page+1}'
+    print(beer)
     return {'beer': beer, 'pagination': pagination}
 
 

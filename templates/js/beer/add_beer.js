@@ -79,5 +79,9 @@ $(document).ready(function(){
         }
     })
 
+    $('#clear_photo_input').on('click', function(e){
+        $('#photo').val('')
+    })
+
 
 })
