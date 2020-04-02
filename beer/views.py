@@ -37,7 +37,6 @@ async def get_beer(request: Request, page: int = 1, q: str = ''):
             b['avatar'] = request.url_for('photo', path=f"./beer/{b['photos']['filenames'][0]}")
     pagination['prev_link'] = request.url_for('get_beer') + f'?page={page-1}'
     pagination['next_link'] = request.url_for('get_beer') + f'?page={page+1}'
-    print(beer)
     return {'beer': beer, 'pagination': pagination}
 
 
