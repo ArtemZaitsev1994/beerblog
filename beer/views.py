@@ -23,8 +23,17 @@ class CommonResponse(BaseModel):
 @router.get('/', name='beer')
 async def beer_list(request: Request, page: int = 1):
     # await request.app.mongo['beer'].clear_db()
+    return templates.TemplateResponse("beer.html", {"request": request})
+
+
+@router.post('/get_beer', name='get_beer')
+async def get_beer(request: Request, page: int = 1):
     beer, pagination = await request.app.mongo['beer'].get_all(page=page)
-    return templates.TemplateResponse("beer.html", {"request": request, 'beer': beer, 'pagination': pagination})
+    for b in beer:
+        b['_id'] = str(b['_id'])
+        if len(b['photos']['filenames']) == 0:
+            b['avatar'] = f'{request.app.beer_photo_path}/beer_default.png'
+    return {'beer': beer, 'pagination': pagination}
 
 
 @router.get('/add_beer', name='add_beer')

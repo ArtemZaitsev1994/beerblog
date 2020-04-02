@@ -14,8 +14,8 @@
                 </a>
             </div>
         </div>
-        <div class="row">
-            {% for b in beer %}
+        <div class="row" id="beer_container">
+            <!-- {% for b in beer %}
                 <div class="col-xs-12 col-md-4">
                     {% if b.photos.filenames %}
                         <img src="{{ url_for('photo', path='./beer/' + b.photos.filenames[0]) }}" alt="" class="img-responsive"  width="350" height="480">
@@ -39,7 +39,7 @@
                     <h4>Оценка</h4><p>{{b.rate}}</p>
                     <h4>Примечание</h4><p>{{b.others}}d</p>
                 </div>
-            {% endfor %}
+            {% endfor %} -->
         </div>
 
   {% if beer %}
@@ -103,9 +103,10 @@
 </script>
 
 </main>
-<script type="text/javascript" src="{{ url_for('static', path='./main.85741bff.js') }}"></script> -->
+ -->
 {% endblock %}
 
 
 {% block footer %}
+<script type="text/javascript" src="{{ url_for('static', path='./js/beer/show_beer.js') }}"></script>
 {% endblock %}
