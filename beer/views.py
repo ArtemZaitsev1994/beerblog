@@ -20,6 +20,11 @@ class CommonResponse(BaseModel):
     error_data: str = None
 
 
+@router.get('/articles', name='articles')
+async def articles(request: Request):
+    return templates.TemplateResponse("articles.html", {"request": request})
+
+
 @router.get('/', name='beer')
 async def beer_list(request: Request):
     # await request.app.mongo['beer'].clear_db()
@@ -63,7 +68,7 @@ async def add_beer(
     name: str = Form(...),
     rate: int = Form(...),
     manufacturer: str = Form(''),
-    fortress: int = Form(''),
+    fortress: float = Form(''),
     gravity: int = Form(''),
     ibu: int = Form(''),
     review: str = Form(''),
@@ -78,6 +83,7 @@ async def add_beer(
         'gravity': gravity,
         'review': review,
         'others': others,
+        'ibu': ibu,
     }
 
     photo_dir = request.app.beer_photo_path
@@ -94,6 +100,7 @@ async def add_beer(
         'filenames': filenames,
     }
     result = await request.app.mongo['beer'].insert_item(data)
+    return templates.TemplateResponse("beer.html", {"request": request})
 
     if result.acknowledged:
         return {'acknowledged': True}

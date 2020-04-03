@@ -16,6 +16,7 @@ $(document).ready(function(){
                 for (i=0;i<3;i++) {
                     elems = data.beer.splice(0,3)
                     for (e of elems) {
+                        console.log(e)
                         row.push(`
                             <div class="col-xs-12 col-md-4">
                                 <img src="${e.avatar}" alt="" class="img-responsive"  width="350" height="480">
