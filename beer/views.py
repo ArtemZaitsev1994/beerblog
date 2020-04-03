@@ -63,7 +63,7 @@ async def add_beer(
     name: str = Form(...),
     rate: int = Form(...),
     manufacturer: str = Form(''),
-    fortress: int = Form(''),
+    fortress: float = Form(''),
     gravity: int = Form(''),
     ibu: int = Form(''),
     review: str = Form(''),
@@ -78,6 +78,7 @@ async def add_beer(
         'gravity': gravity,
         'review': review,
         'others': others,
+        'ibu': ibu,
     }
 
     photo_dir = request.app.beer_photo_path
