@@ -7,11 +7,11 @@ WORKDIR /app
 # Copy the current directory contents into the container at /app
 ADD . /app
 
+RUN mv wait_docker_script /wait
+RUN chmod +x /wait && chmod +x ./start.sh
+
 # Install any needed packages
 RUN cd /app && pip install -r requirements.txt
-
-ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.6.0/wait /wait
-RUN chmod +x /wait && chmod +x ./start.sh
 
 CMD ./start.sh
 

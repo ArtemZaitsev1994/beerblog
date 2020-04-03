@@ -3,3 +3,4 @@ __pycache__
 static/photo
 testapp.py
 data
+wait_docker_script
