@@ -20,6 +20,11 @@ class CommonResponse(BaseModel):
     error_data: str = None
 
 
+@router.get('/articles', name='articles')
+async def articles(request: Request):
+    return templates.TemplateResponse("articles.html", {"request": request})
+
+
 @router.get('/', name='beer')
 async def beer_list(request: Request):
     # await request.app.mongo['beer'].clear_db()
@@ -95,6 +100,7 @@ async def add_beer(
         'filenames': filenames,
     }
     result = await request.app.mongo['beer'].insert_item(data)
+    return templates.TemplateResponse("beer.html", {"request": request})
 
     if result.acknowledged:
         return {'acknowledged': True}

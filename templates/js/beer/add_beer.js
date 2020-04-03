@@ -11,7 +11,6 @@ $(document).ready(function(){
 
 
     send_review = function(){
-        console.log(1111)
         errors = ''
 
         if ($('#name').val().length < 1){
@@ -42,6 +41,7 @@ $(document).ready(function(){
         data.append('review', $('#review').val())
         data.append('others', $('#others').val())
         data.append('photo', $('#photo')[0].files[0])
+        data.append('gravity', $('#gravity').val())
         // data1 = {
         //     'name': $('#name').val(),
         //     'manufacturer': $('#manufacturer').val(),
@@ -61,7 +61,7 @@ $(document).ready(function(){
             // data: JSON.stringify(data),
             data: data,
             processData: false,
-            contentType: 'multipart/form-data',
+            contentType: 'multipart/form-data; boundary=----WebKitFormBoundaryAfue2PxayUdscUBZ',
             success: function(data) {
                 console.log(data)
                 showSucces()
