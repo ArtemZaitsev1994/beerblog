@@ -4,9 +4,9 @@ $(document).ready(function(){
         $('#success').html('');
         $('#error').html(error);
     }
-    function showSucces(){
+    function showSucces(mess){
         $('#error').html('');
-        $('#success').html('Вопрос успешно отправлен.');
+        $('#success').html(mess);
     }
 
 
@@ -40,31 +40,22 @@ $(document).ready(function(){
         data.append('rate', $('#rate').val())
         data.append('review', $('#review').val())
         data.append('others', $('#others').val())
-        data.append('photo', $('#photo')[0].files[0])
-        data.append('gravity', $('#gravity').val())
-        // data1 = {
-        //     'name': $('#name').val(),
-        //     'manufacturer': $('#manufacturer').val(),
-        //     'fortress': $('#fortress').val(),
-        //     'gravity': $('#gravity').val(),
-        //     'rate': $('#rate').val(),
-        //     'review': $('#review').val(),
-        //     'others': $('#others').val(),
-        //     'photo': $('#photo')[0].files[0],
-        // }
+        data.append('photos', $('#photo')[0].files[0])
+        data.append('ibu', $('#ibu').val())
 
-        console.log(data)
         $.ajax({
             dataType: 'json',
             url: '/beer/add_beer',
             type: 'POST',
-            // data: JSON.stringify(data),
             data: data,
             processData: false,
-            contentType: 'multipart/form-data; boundary=----WebKitFormBoundaryAfue2PxayUdscUBZ',
+            contentType: false,
             success: function(data) {
-                console.log(data)
-                showSucces()
+                if (data.acknowledged) {
+                    showSucces(`Пиво ${$('#name').val()} успешно добавлено.`)
+                } else {
+                    showSucces(data.message)
+                }
             }
         });
 

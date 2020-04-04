@@ -85,6 +85,7 @@ async def add_beer(
         'others': others,
         'ibu': ibu,
     }
+    print(data)
 
     photo_dir = request.app.beer_photo_path
     filenames = []
@@ -100,13 +101,16 @@ async def add_beer(
         'filenames': filenames,
     }
     result = await request.app.mongo['beer'].insert_item(data)
-    return templates.TemplateResponse("beer.html", {"request": request})
 
     if result.acknowledged:
-        return {'acknowledged': True}
+        response = {'acknowledged': True}
     else:
-        return {'acknowledged': False, 'message': 'Insert failed', 'error_data': data}
-
+        response = {
+            'acknowledged': False,
+            'message': 'Insert failed on serverside. Call Тёма, scream and run around',
+            'error_data': data
+        }
+    return response
 
 # class CreateBeer(graphene.Mutation):
 #     class Arguments:
