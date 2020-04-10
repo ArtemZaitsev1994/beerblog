@@ -1,14 +1,10 @@
 import os
 
 from fastapi.applications import FastAPI
-from fastapi.staticfiles import StaticFiles
 from envparse import env
-from envparse import ConfigurationError
 
 
-BEER_COLLECTION = 'bb_beer'
-NOT_CONFIRMED_QUESTION_COLLECTION = 'not_confirmed_quiz_questions'
-ADMIN_COLLECTION = 'admin'
+BEER_COLLECTION = 'beerblog_bb_beer'
 
 STATIC_PATH = '/static'
 
@@ -38,8 +34,6 @@ else:
 
 
 def setup_app(app: FastAPI):
-    app.mount("/static", StaticFiles(directory="templates"), name="static")
-    app.mount("/photo", StaticFiles(directory="static/photo"), name="photo")
 
     BASEDIR = os.path.dirname(os.path.realpath(__file__))
     PHOTO_PATH = os.path.join(BASEDIR, 'static/photo/')

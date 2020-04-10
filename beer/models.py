@@ -13,8 +13,8 @@ class Alcohol:
         self.collection = NotImplementedError
 
     async def get_all(self, page=1, per_page=9) -> List[Dict[str, Any]]:
-        all_qs = self.collection.find()
-        count_qs = await self.collection.count_documents({})
+        all_qs = self.collection.find({'submitted': True})
+        count_qs = await self.collection.count_documents()
         has_next = count_qs > per_page * page
         qs = await all_qs.skip((page - 1) * per_page).limit(per_page).to_list(length=None)
 
@@ -33,7 +33,7 @@ class Alcohol:
         return await self.collection.find().to_list(length=None)
 
     async def insert_item(self, data):
-        print(data)
+        # data['submitted'] = False
         return await self.collection.insert_one(data)
 
     async def clear_db(self):

@@ -8,5 +8,5 @@ from settings import setup_app
 app = FastAPI()
 
 setup_app(app)
-set_routes(app)
 setup_mongo(app)
+set_routes(app)

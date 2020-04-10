@@ -85,7 +85,6 @@ async def add_beer(
         'others': others,
         'ibu': ibu,
     }
-    print(data)
 
     photo_dir = request.app.beer_photo_path
     filenames = []
