@@ -50,66 +50,66 @@ async def add_beer_template(request: Request):
     return templates.TemplateResponse("add_beer.html", {"request": request})
 
 
-class BeerDataIn(BaseModel):
-    name: str = Form(...)
-    rate: int = Form(...)
-    manufacturer: str = Form(...)
-    fortress: int = Form(...)
-    gravity: int = Form(...)
-    review: str = Form(...)
-    others: str = Form(...)
-    photo: List[UploadFile] = File(...)
+# class BeerDataIn(BaseModel):
+#     name: str = Form(...)
+#     rate: int = Form(...)
+#     manufacturer: str = Form(...)
+#     fortress: int = Form(...)
+#     gravity: int = Form(...)
+#     review: str = Form(...)
+#     others: str = Form(...)
+#     photo: List[UploadFile] = File(...)
 
 
-@router.post('/add_beer', name='add_beer', response_model=CommonResponse)
-async def add_beer(
-    request: Request,
-    *,
-    name: str = Form(...),
-    rate: int = Form(...),
-    manufacturer: str = Form(''),
-    fortress: float = Form(''),
-    gravity: int = Form(''),
-    ibu: int = Form(''),
-    review: str = Form(''),
-    others: str = Form(''),
-    photos: List[UploadFile] = File(None)
-):
-    data = {
-        'name': name,
-        'rate': rate,
-        'manufacturer': manufacturer,
-        'fortress': fortress,
-        'gravity': gravity,
-        'review': review,
-        'others': others,
-        'ibu': ibu,
-    }
+# @router.post('/add_beer', name='add_beer', response_model=CommonResponse)
+# async def add_beer(
+#     request: Request,
+#     *,
+#     name: str = Form(...),
+#     rate: int = Form(...),
+#     manufacturer: str = Form(''),
+#     fortress: float = Form(''),
+#     gravity: int = Form(''),
+#     ibu: int = Form(''),
+#     review: str = Form(''),
+#     others: str = Form(''),
+#     photos: List[UploadFile] = File(None)
+# ):
+#     data = {
+#         'name': name,
+#         'rate': rate,
+#         'manufacturer': manufacturer,
+#         'fortress': fortress,
+#         'gravity': gravity,
+#         'review': review,
+#         'others': others,
+#         'ibu': ibu,
+#     }
 
-    photo_dir = request.app.beer_photo_path
-    filenames = []
-    for photo in photos:
-        if photo.filename == '':
-            break
-        filename = uuid4().hex
-        async with AIOFile(os.path.join(photo_dir, filename), 'wb') as f:
-            await f.write(await photo.read())
-        filenames.append(filename)
+#     photo_dir = request.app.beer_photo_path
+#     filenames = []
+#     for photo in photos:
+#         if photo.filename == '':
+#             break
+#         filename = uuid4().hex
+#         async with AIOFile(os.path.join(photo_dir, filename), 'wb') as f:
+#             await f.write(await photo.read())
+#         filenames.append(filename)
 
-    data['photos'] = {
-        'filenames': filenames,
-    }
-    result = await request.app.mongo['beer'].insert_item(data)
+#     data['photos'] = {
+#         'filenames': filenames,
+#     }
+#     result = await request.app.mongo['beer'].insert_item(data)
 
-    if result.acknowledged:
-        response = {'acknowledged': True}
-    else:
-        response = {
-            'acknowledged': False,
-            'message': 'Insert failed on serverside. Call Тёма, scream and run around',
-            'error_data': data
-        }
-    return response
+#     if result.acknowledged:
+#         response = {'acknowledged': True}
+#     else:
+#         response = {
+#             'acknowledged': False,
+#             'message': 'Insert failed on serverside. Call Тёма, scream and run around',
+#             'error_data': data
+#         }
+#     return response
 
 # class CreateBeer(graphene.Mutation):
 #     class Arguments:

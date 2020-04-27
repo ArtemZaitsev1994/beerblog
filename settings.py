@@ -29,6 +29,10 @@ if os.path.isfile('.env'):
     #     ADMIN_PASSWORD = env.str('ADMIN_PASSWORD')
     # except ConfigurationError:
     #     ADMIN_PASSWORD, ADMIN_LOGIN = None, None
+
+    JWT_SECRET_KEY = env.str('JWT_SECRET_KEY')
+    JWT_ALGORITHM = env.str('JWT_ALGORITHM')
+    AUTH_SERVER_LINK = env.str('AUTH_SERVER_LINK')
 else:
     raise SystemExit('Create an env-file please.!')
 
