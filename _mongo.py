@@ -3,6 +3,7 @@ from fastapi.applications import FastAPI
 
 from settings import MONGO_DB_NAME, MONGO_HOST
 from beer.models import Beer
+from wine.models import Wine
 
 
 def setup_mongo(app: FastAPI):
@@ -11,4 +12,5 @@ def setup_mongo(app: FastAPI):
 
     app.mongo = {
         'beer': Beer(app.db),
+        'wine': Wine(app.db),
     }

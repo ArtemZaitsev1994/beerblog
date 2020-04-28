@@ -1,3 +1,9 @@
+console.log(`В моей душе лежит сокровище,
+И ключ поручен только мне!
+Ты право, пьяное чудовище!
+Я знаю: истина в вине.`)
+
+
 $(document).ready(function(){
 
     function showError(error){

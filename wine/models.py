@@ -1,11 +1,11 @@
 from motor.motor_asyncio import AsyncIOMotorDatabase
 
-from settings import BEER_COLLECTION
+from settings import WINE_COLLECTION
 from common.models import Alcohol
 
 
-class Beer(Alcohol):
+class Wine(Alcohol):
 
     def __init__(self, db: AsyncIOMotorDatabase, **kw):
         super().__init__(db)
-        self.collection = self.db[BEER_COLLECTION]
+        self.collection = self.db[WINE_COLLECTION]

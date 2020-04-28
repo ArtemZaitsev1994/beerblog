@@ -6,10 +6,10 @@
     <div class="container">
         <div class="row">
             <div class="col-xs-12 col-md-12 section-container-spacer text-center">
-                <a href="{{ url_for('beer') }}">
+                <a href="{{ url_for('wine') }}">
                   <h2 class="text-center">Оценки</h2>
                 </a>
-                <a href="{{ url_for('add_beer') }}">
+                <a href="{{ url_for('add_wine') }}">
                   <h2 class="text-center">Добавить оценку</h2>
                 </a>
             </div>
@@ -17,8 +17,8 @@
           
           <div class="row">
             <div class="col-md-10 col-md-offset-1">
-               <!-- <form id="beerForm" class="reveal-content"> -->
-                <form action="{{ url_for('add_beer') }}" enctype="multipart/form-data" method="post">
+               <!-- <form id="wineForm" class="reveal-content"> -->
+                <form action="{{ url_for('add_wine') }}" enctype="multipart/form-data" method="post">
                   <div class="row">
                     <div class="col-md-7">
                       <div class="form-group">
@@ -112,5 +112,5 @@
 
 {% block footer %}
 <script type="text/javascript" src="{{ url_for('static', path='./js/jquery.cookies.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static', path='./js/beer/add_beer.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', path='./js/wine/add_wine.js') }}"></script>
 {% endblock %}

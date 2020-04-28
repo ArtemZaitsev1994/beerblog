@@ -29,18 +29,18 @@ async def save_item(
     rate: int = Form(...),
     manufacturer: str = Form(''),
     fortress: float = Form(''),
-    gravity: int = Form(''),
+    alcohol: int = Form(''),
     ibu: int = Form(''),
     review: str = Form(''),
     others: str = Form(''),
-    photos: List[UploadFile] = File(None)
+    photos: List[UploadFile] = []
 ):
     data = {
         'name': name,
         'rate': rate,
         'manufacturer': manufacturer,
         'fortress': fortress,
-        'gravity': gravity,
+        'alcohol': alcohol,
         'review': review,
         'others': others,
         'ibu': ibu,
@@ -52,6 +52,8 @@ async def save_item(
         if photo.filename == '':
             break
         filename = uuid4().hex
+        if not os.path.exists(photo_dir):
+            os.makedirs(photo_dir)
         async with AIOFile(os.path.join(photo_dir, filename), 'wb') as f:
             await f.write(await photo.read())
         filenames.append(filename)
@@ -62,10 +64,10 @@ async def save_item(
     result = await request.app.mongo['beer'].insert_item(data)
 
     if result.acknowledged:
-        response = {'acknowledged': True}
+        response = {'success': True}
     else:
         response = {
-            'acknowledged': False,
+            'success': False,
             'message': 'Insert failed at the serverside. Call Тёма, scream and run around',
             'error_data': data
         }
