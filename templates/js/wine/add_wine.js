@@ -72,7 +72,8 @@ $(document).ready(function(){
     }
 
 
-    send_review = function(){
+    send_review = function(e){
+        e.preventDefault()
         errors = ''
 
         if ($('#name').val().length < 1){

@@ -21,8 +21,14 @@
         <link href="{{ url_for('static', path='./pagination.css') }}" rel="stylesheet">
         <div class="center">
             <div class="pagination" id="pagination">
-                <a class="get_wine_btn" id="prev_link">Previous</a>
-                <a class="get_wine_btn" id="next_link">Next</a>
+                    <div class="row">
+                        <span>
+                            <a class="get_wine_btn btn get_beer_btn" id="prev_link">Previous</a>
+                        </span>
+                        <span>
+                            <a class="get_wine_btn btn get_beer_btn" id="next_link">Next</a>
+                        </span>
+                    </div>
             </div>
         </div>
 

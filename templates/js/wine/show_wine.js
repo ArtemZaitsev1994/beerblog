@@ -57,13 +57,11 @@ $(document).ready(function(){
 
 
                 pag = data.pagination
-                console.log(pag)
                 if (pag.page <= 1) {
-                    $('#prev_link').attr('class', 'disabled')
+                    $('#prev_link').addClass('disabled')
                 }
                 if (!pag.has_next) {
-                    console.log(1111111111)
-                    $('#next_link').attr('class', 'disabled')
+                    $('#next_link').addClass('disabled')
                 }
                 $('#prev_link').attr('page', pag.prev)
                 $('#next_link').attr('page', pag.next)
@@ -126,14 +124,14 @@ $(document).ready(function(){
 
                 pag = data.pagination
                 if (pag.page <= 1) {
-                    $('#prev_link').attr('class', 'disabled')
+                    $('#prev_link').addClass('disabled')
                 } else {
-                    $('#prev_link').removeAttr('class', 'disabled')
+                    $('#prev_link').removeClass('disabled')
                 }
                 if (!pag.has_next) {
-                    $('#next_link').attr('class', 'disabled')
+                    $('#next_link').addClass('disabled')
                 } else {
-                    $('#next_link').removeAttr('class', 'disabled')
+                    $('#next_link').removeClass('disabled')
                 }
                 $('#prev_link').attr('page', pag.prev)
                 $('#next_link').attr('page', pag.next)
