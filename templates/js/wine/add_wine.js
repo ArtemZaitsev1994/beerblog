@@ -1,7 +1,7 @@
 $(document).ready(function(){
     local_token = localStorage.getItem('Authorization')
     cookie_token = $.cookie('Authorization')
-    section = 'beer'
+    section = 'wine'
     console.log(local_token)
     console.log(cookie_token)
     console.log((cookie_token === undefined && local_token === null))
@@ -78,14 +78,17 @@ $(document).ready(function(){
         if ($('#name').val().length < 1){
             errors += 'Добавь название.<br>'
         }
-        if (isNaN(parseInt($('#fortress').val(), 10))) {
+        if (isNaN(parseInt($('#alcohol').val(), 10))) {
             errors += 'Крепость должна быть числом.<br>'
-        }
-        if (isNaN(parseInt($('#alcohol').val(), 10))){
-            errors += 'Плотность должна быть числом.<br>'
         }
         if (isNaN(parseInt($('#rate').val(), 10))){
             errors += 'Плотность должна быть числом.<br>'
+        }
+        if ($('#style').val().length < 1){
+            errors += 'Не выбран вид вина.<br>'
+        }
+        if ($('#sugar').val().length < 1){
+            errors += 'Не выбран вкус (сухое/сладкое).<br>'
         }
 
         if (errors){
@@ -94,14 +97,15 @@ $(document).ready(function(){
         }
 
         var data = new FormData();
+        data.append('alcohol_type', 'wine')
         data.append('name', $('#name').val())
         data.append('manufacturer', $('#manufacturer').val())
-        data.append('fortress', $('#fortress').val())
         data.append('alcohol', $('#alcohol').val())
+        data.append('style', $('#style').val())
         data.append('rate', $('#rate').val())
         data.append('review', $('#review').val())
         data.append('others', $('#others').val())
-        data.append('ibu', $('#ibu').val())
+        data.append('sugar', $('#sugar').val())
         if ($('#photo')[0].files[0] !== undefined){
             data.append('photos', $('#photo')[0].files[0])
         }
@@ -120,7 +124,7 @@ $(document).ready(function(){
             success: function(data) {
                 checkAuth(data)
                 if (data.success) {
-                    showSucces(`Пиво ${$('#name').val()} успешно добавлено.`)
+                    showSucces(`Вино ${$('#name').val()} успешно добавлено.`)
                 } else {
                     showSucces(data.message)
                 }

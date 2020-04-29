@@ -25,11 +25,11 @@ async def get_wine(request: Request, page: int = 1, q: str = ''):
     for b in wine:
         b['_id'] = str(b['_id'])
         if not b.get('photos') or len(b['photos']['filenames']) == 0:
-            b['avatar'] = request.url_for("photo", path='./wine/wine_default.png')
+            b['avatar'] = request.url_for("photo", path='./wine_default.jpg')
         else:
             b['avatar'] = request.url_for('photo', path=f"./wine/{b['photos']['filenames'][0]}")
-    pagination['prev_link'] = request.url_for('get_wine') + f'?page={page-1}'
-    pagination['next_link'] = request.url_for('get_wine') + f'?page={page+1}'
+    pagination['prev_link'] = f'{request.url_for("get_wine")}?page={page-1}'
+    pagination['next_link'] = f'{request.url_for("get_wine")}?page={page+1}'
     return {'wine': wine, 'pagination': pagination}
 
 

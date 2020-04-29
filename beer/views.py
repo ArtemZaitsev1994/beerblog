@@ -37,7 +37,7 @@ async def get_beer(request: Request, page: int = 1, q: str = ''):
     for b in beer:
         b['_id'] = str(b['_id'])
         if not b.get('photos') or len(b['photos']['filenames']) == 0:
-            b['avatar'] = request.url_for("photo", path='./beer/beer_default.png')
+            b['avatar'] = request.url_for("photo", path='./beer_default.jpg')
         else:
             b['avatar'] = request.url_for('photo', path=f"./beer/{b['photos']['filenames'][0]}")
     pagination['prev_link'] = request.url_for('get_beer') + f'?page={page-1}'
@@ -54,8 +54,8 @@ async def add_beer_template(request: Request):
 #     name: str = Form(...)
 #     rate: int = Form(...)
 #     manufacturer: str = Form(...)
-#     fortress: int = Form(...)
 #     alcohol: int = Form(...)
+#     fortress: int = Form(...)
 #     review: str = Form(...)
 #     others: str = Form(...)
 #     photo: List[UploadFile] = File(...)
@@ -68,8 +68,8 @@ async def add_beer_template(request: Request):
 #     name: str = Form(...),
 #     rate: int = Form(...),
 #     manufacturer: str = Form(''),
-#     fortress: float = Form(''),
-#     alcohol: int = Form(''),
+#     alcohol: float = Form(''),
+#     fortress: int = Form(''),
 #     ibu: int = Form(''),
 #     review: str = Form(''),
 #     others: str = Form(''),
@@ -79,8 +79,8 @@ async def add_beer_template(request: Request):
 #         'name': name,
 #         'rate': rate,
 #         'manufacturer': manufacturer,
-#         'fortress': fortress,
 #         'alcohol': alcohol,
+#         'fortress': fortress,
 #         'review': review,
 #         'others': others,
 #         'ibu': ibu,
@@ -116,8 +116,8 @@ async def add_beer_template(request: Request):
 #         name = graphene.String()
 #         rate: int
 #         manufacturer = graphene.String()
-#         fortress: int = None
 #         alcohol: int = None
+#         fortress: int = None
 #         review = graphene.String()
 #         others = graphene.String()
 

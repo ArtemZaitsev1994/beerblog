@@ -23,10 +23,10 @@ $(document).ready(function(){
                                 <h3 class="text-center">${e.name}</h3>
                                     <div class="row">
                                         <div class="col-md-4">
-                                                    <h4>Крепость</h4><p>${e.fortress}</p>
+                                                    <h4>Крепость</h4><p>${e.alcohol}</p>
                                         </div>
                                         <div class="col-md-4">
-                                                    <h4>Плотность</h4><p>${e.alcohol}</p>
+                                                    <h4>Плотность</h4><p>${e.fortress}</p>
                                         </div>
                                         <div class="col-md-4">
                                                     <h4>IBU</h4><p>${e.ibu}</p>
@@ -93,10 +93,10 @@ $(document).ready(function(){
                                 <h3 class="text-center">${e.name}</h3>
                                     <div class="row">
                                         <div class="col-md-4">
-                                                    <h4>Крепость</h4><p>${e.fortress}</p>
+                                                    <h4>Крепость</h4><p>${e.alcohol}</p>
                                         </div>
                                         <div class="col-md-4">
-                                                    <h4>Плотность</h4><p>${e.alcohol}</p>
+                                                    <h4>Плотность</h4><p>${e.fortress}</p>
                                         </div>
                                         <div class="col-md-4">
                                                     <h4>IBU</h4><p>${e.ibu}</p>

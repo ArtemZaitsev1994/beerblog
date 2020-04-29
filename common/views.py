@@ -28,23 +28,35 @@ async def save_item(
     name: str = Form(...),
     rate: int = Form(...),
     manufacturer: str = Form(''),
-    fortress: float = Form(''),
-    alcohol: int = Form(''),
+    alcohol: float = Form(''),
+    fortress: int = Form(''),
+    style: str = Form(''),
+    sugar: str = Form(''),
     ibu: int = Form(''),
     review: str = Form(''),
     others: str = Form(''),
-    photos: List[UploadFile] = []
+    photos: List[UploadFile] = [],
+    alcohol_type: str = Form(...)
 ):
     data = {
         'name': name,
         'rate': rate,
         'manufacturer': manufacturer,
-        'fortress': fortress,
         'alcohol': alcohol,
         'review': review,
         'others': others,
-        'ibu': ibu,
     }
+
+    if alcohol_type == 'wine':
+        data.update({
+            'sugar': sugar,
+            'style': style,
+        })
+    elif alcohol_type == 'beer':
+        data.update({
+            'fortress': fortress,
+            'ibu': ibu,
+        })
 
     photo_dir = request.app.beer_photo_path
     filenames = []
@@ -61,7 +73,7 @@ async def save_item(
     data['photos'] = {
         'filenames': filenames,
     }
-    result = await request.app.mongo['beer'].insert_item(data)
+    result = await request.app.mongo[alcohol_type].insert_item(data)
 
     if result.acknowledged:
         response = {'success': True}

@@ -10,32 +10,31 @@ $(document).ready(function(){
         $('#success').html('');
         $('#error').html(error);
     }
-    showBeer1 = () => {
+    showWine1 = () => {
         $.ajax({
             dataType: 'json',
-            url: '/beer/get_beer?page=1',
+            url: '/wine/get_wine?page=1',
             type: 'POST',
             // data: JSON.stringify({'page': page}),
             success: function(data) {
                 count = 1
                 row = []
                 for (i=0;i<3;i++) {
-                    elems = data.beer.splice(0,3)
+                    elems = data.wine.splice(0,3)
                     for (e of elems) {
-                        console.log(e)
                         row.push(`
                             <div class="col-xs-12 col-md-4">
                                 <img src="${e.avatar}" alt="" class="img-responsive"  width="350" height="480">
                                 <h3 class="text-center">${e.name}</h3>
                                     <div class="row">
                                         <div class="col-md-4">
-                                                    <h4>Крепость</h4><p>${e.fortress}</p>
+                                                    <h4>Крепость</h4><p>${e.alcohol}</p>
                                         </div>
                                         <div class="col-md-4">
-                                                    <h4>Плотность</h4><p>${e.alcohol}</p>
+                                                    <h4>Вид</h4><p>${e.style}</p>
                                         </div>
                                         <div class="col-md-4">
-                                                    <h4>IBU</h4><p>${e.ibu}</p>
+                                                    <h4>Сахар</h4><p>${e.sugar}</p>
                                         </div>
                                     </div>
                                 <h4>Описание</h4><p>${e.review}</p>
@@ -46,7 +45,7 @@ $(document).ready(function(){
                         `)
                     }
                     
-                    $('#beer_container').append(`
+                    $('#wine_container').append(`
                         <div class="row">
                             ${row.join('')}
                         </div>`);
@@ -58,10 +57,12 @@ $(document).ready(function(){
 
 
                 pag = data.pagination
+                console.log(pag)
                 if (pag.page <= 1) {
                     $('#prev_link').attr('class', 'disabled')
                 }
                 if (!pag.has_next) {
+                    console.log(1111111111)
                     $('#next_link').attr('class', 'disabled')
                 }
                 $('#prev_link').attr('page', pag.prev)
@@ -73,15 +74,14 @@ $(document).ready(function(){
 
 
 
-    showBeer1()
+    showWine1()
 
-    $('.get_beer_btn').on('click', function(e){
+    $('.get_wine_btn').on('click', function(e){
         e.preventDefault()
-        console.log(this.attributes.page.value)
         page = this.attributes.page.value
         $.ajax({
             dataType: 'json',
-            url: `/beer/get_beer?page=${page}`,
+            url: `/wine/get_wine?page=${page}`,
             // url: url,
             type: 'POST',
             // data: JSON.stringify({'page': page}),
@@ -89,9 +89,9 @@ $(document).ready(function(){
                 count = 1
                 row = []
                 console.log(data)
-                $('#beer_container').empty()
+                $('#wine_container').empty()
                 for (i=0;i<3;i++) {
-                    elems = data.beer.splice(0,3)
+                    elems = data.wine.splice(0,3)
                     for (e of elems) {
                         row.push(`
                             <div class="col-xs-12 col-md-4">
@@ -99,10 +99,10 @@ $(document).ready(function(){
                                 <h3 class="text-center">${e.name}</h3>
                                     <div class="row">
                                         <div class="col-md-4">
-                                                    <h4>Крепость</h4><p>${e.fortress}</p>
+                                                    <h4>Крепость</h4><p>${e.alcohol}</p>
                                         </div>
                                         <div class="col-md-4">
-                                                    <h4>Плотность</h4><p>${e.alcohol}</p>
+                                                    <h4>Плотность</h4><p>${e.fortress}</p>
                                         </div>
                                         <div class="col-md-4">
                                                     <h4>IBU</h4><p>${e.ibu}</p>
@@ -116,7 +116,7 @@ $(document).ready(function(){
                         `)
                     }
                     
-                    $('#beer_container').append(`
+                    $('#wine_container').append(`
                         <div class="row">
                             ${row.join('')}
                         </div>`);
@@ -125,7 +125,6 @@ $(document).ready(function(){
                 }
 
                 pag = data.pagination
-                console.log(pag)
                 if (pag.page <= 1) {
                     $('#prev_link').attr('class', 'disabled')
                 } else {
