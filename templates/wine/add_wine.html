@@ -1,5 +1,12 @@
 {% extends 'base.html' %}
 
+{% block header %}
+
+<script type="text/javascript" src="{{ url_for('static', path='./js/jquery.cookies.js') }}" defer></script>
+<script type="text/javascript" src="{{ url_for('static', path='./js/check_token.js') }}" defer></script>
+<script type="text/javascript" src="{{ url_for('static', path='./js/wine/add_wine.js') }}" defer></script>
+{% endblock %}
+
 {% block content %}
 <link href="{{ url_for('static', path='./slider.css') }}" rel="stylesheet">
 <div class="section-container">
@@ -141,6 +148,4 @@
 
 
 {% block footer %}
-<script type="text/javascript" src="{{ url_for('static', path='./js/jquery.cookies.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static', path='./js/wine/add_wine.js') }}"></script>
 {% endblock %}

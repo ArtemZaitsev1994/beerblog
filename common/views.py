@@ -105,7 +105,8 @@ async def get_auth_link(request: Request, data: Dict[str, str]):
 @router.get('/auth/{token}', name='auth')
 async def auth(request: Request, token: str):
     urls = {
-        'beer': 'add_beer'
+        'beer': 'add_beer',
+        'wine': 'add_wine'
     }
     """Метод для принятия авторизации"""
     try:
