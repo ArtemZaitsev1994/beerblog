@@ -28,11 +28,12 @@ async def articles(request: Request):
 @router.get('/', name='beer')
 async def beer_list(request: Request):
     # await request.app.mongo['beer'].clear_db()
-    return templates.TemplateResponse("beer.html", {"request": request})
+    return templates.TemplateResponse("beer/beer.html", {"request": request})
 
 
 @router.post('/get_beer', name='get_beer')
 async def get_beer(request: Request, page: int = 1, q: str = ''):
+    page = 1 if page < 1 else page
     beer, pagination = await request.app.mongo['beer'].get_all(page=page)
     for b in beer:
         b['_id'] = str(b['_id'])
@@ -47,7 +48,7 @@ async def get_beer(request: Request, page: int = 1, q: str = ''):
 
 @router.get('/add_beer', name='add_beer')
 async def add_beer_template(request: Request):
-    return templates.TemplateResponse("add_beer.html", {"request": request})
+    return templates.TemplateResponse("beer/add_beer.html", {"request": request})
 
 
 # class BeerDataIn(BaseModel):

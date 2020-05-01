@@ -1,11 +1,4 @@
-console.log(`В моей душе лежит сокровище,
-И ключ поручен только мне!
-Ты право, пьяное чудовище!
-Я знаю: истина в вине.`)
-
-
 $(document).ready(function(){
-
     var page = 0
 
     function showError(error){
@@ -13,6 +6,7 @@ $(document).ready(function(){
         $('#error').html(error);
     }
     function showItems(e){
+        console.log(1)
         e.preventDefault()
 
         if (this.id == 'next_link') {
@@ -22,7 +16,7 @@ $(document).ready(function(){
         }
         $.ajax({
             dataType: 'json',
-            url: `/wine/get_wine?page=${page}`,
+            url: `/vodka/get_vodka?page=${page}`,
             type: 'POST',
             // data: JSON.stringify({'page': page}),
             success: function(data) {
@@ -30,23 +24,12 @@ $(document).ready(function(){
                 count = 1
                 row = []
                 for (i=0;i<3;i++) {
-                    elems = data.wine.splice(0,3)
+                    elems = data.vodka.splice(0,3)
                     for (e of elems) {
                         row.push(`
                             <div class="col-xs-12 col-md-4">
                                 <img src="${e.avatar}" alt="" class="img-responsive"  width="350" height="480">
                                 <h3 class="text-center">${e.name}</h3>
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                                    <h4>Крепость</h4><p>${e.alcohol}</p>
-                                        </div>
-                                        <div class="col-md-4">
-                                                    <h4>Вид</h4><p>${e.style}</p>
-                                        </div>
-                                        <div class="col-md-4">
-                                                    <h4>Сахар</h4><p>${e.sugar}</p>
-                                        </div>
-                                    </div>
                                 <h4>Описание</h4><p>${e.review}</p>
                                 <h4>Производитель</h4><p>${e.manufacturer}</p>
                                 <h4>Оценка</h4><p>${e.rate}</p>

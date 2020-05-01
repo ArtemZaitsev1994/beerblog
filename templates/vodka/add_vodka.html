@@ -2,56 +2,27 @@
 
 {% block header %}
     {{ super() }}
-<script type="text/javascript" src="{{ url_for('static', path='./js/wine/add_wine.js') }}" defer></script>
+<script type="text/javascript" src="{{ url_for('static', path='./js/vodka/add_vodka.js') }}" defer></script>
 {% endblock %}
 
 {% block nav %}
-<a href="{{ url_for('wine') }}">
+<a href="{{ url_for('vodka') }}">
     <h2 class="text-center">Оценки</h2>
 </a>
-<a href="{{ url_for('add_wine') }}">
+<a href="{{ url_for('add_vodka') }}">
     <h2 class="text-center">Добавить оценку</h2>
 </a>
 {% endblock %}
 
 {% block item_form %}
 <div class="form-group">
+
   <input type="text" class="form-control" name="name" id="name" placeholder="Название">
 </div>
 <div class="form-group">
   <input type="text" class="form-control" name="manufacturer" id="manufacturer" placeholder="Производитель">
 </div>
-<div class="row form-group"  style="display: flex;">
-  <div class="col-md-4">
-    <input type="text" class="form-control" name="alcohol" id="alcohol" placeholder="Крепость" onkeyup="this.value = this.value.replace(/[^\d\.]/g,'');">
-  </div>
 
-  <div class="col-md-4">
-    <div class="form-group">
-      <select class="form-control" required id="style">
-        <option value="">Выбери вид</option>
-        <option value="Красное">Красное</option>
-        <option value="Белое">Белое</option>
-        <option value="Розовое">Розовое</option>
-        <option value="Игристое">Игристое</option>
-        <option value="Фруктовое">Фруктовое</option>
-      </select>
-    </div>
-  </div>
-
-  <div class="col-md-4">
-    <div class="form-group">
-      <select class="form-control" required id="sugar">
-        <option value="">Выбери вкус</option>
-        <option value="Сухое">Сухое</option>
-        <option value="Полусухое">Полусухое</option>
-        <option value="Полусладкое">Полусладкое</option>
-        <option value="Сладкое">Сладкое</option>
-      </select>
-    </div>
-  </div>
-
-</div>
 <div class="form-group">
   <textarea rows="3" class="form-control" name="review" id="review" placeholder="Описание"></textarea>
 </div>

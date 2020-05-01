@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<script type="text/javascript" src="{{ url_for('static', path='./js/jquery.cookies.js') }}" defer></script>
+<script type="text/javascript" src="{{ url_for('static', path='./js/check_token.js') }}" defer></script>
+{% endblock %}
+
+{% block content %}
+<link href="{{ url_for('static', path='./slider.css') }}" rel="stylesheet">
+<div class="section-container">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-md-12 section-container-spacer text-center">
+                {% block nav %}
+                {% endblock %}
+            </div>
+            <h3 class="text-center">Пиво</h3>
+        </div>
+
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <!-- <form id="beerForm" class="reveal-content"> -->
+                    <form>
+                        <div class="row">
+                            <div class="col-md-7">
+                                {% block item_form %}
+                                {% endblock %}
+
+
+                                <!-- <input class="btn btn-primary" id="submit" title="Отправить" type="button" value="Отправить"> -->
+
+                                <p>
+                                    <a class="btn btn-primary" id="submit" href="">Отправить</a>
+                                </p>
+                                <div id="error" style="color: red;"></div>
+                                <div id="success" style="color: green;"></div>
+
+                            </div>
+
+                            <div class="col-md-5 address-container">
+                                <ul class="list-unstyled">
+                                    <li>
+                                        <span class="fa-icon">
+                                            <i class="fa fa-phone" aria-hidden="true"></i>
+                                        </span>
+                                    +7 (992) 00 88 615                        </li>
+                                    <li>
+                                        <span class="fa-icon">
+                                            <i class="fa fa-at" aria-hidden="true"></i>
+                                        </span>
+                                        artz1994@mail.ru
+                                    </li>
+                                    <li>
+                                        <span class="fa-icon">
+                                            <i class="fa fa fa-map-marker" aria-hidden="true"></i>
+                                        </span>
+                                        Улица Пушкина, Дом Колотушкина
+                                    </li>
+                                </ul>
+                                <h3>Напиши мне</h3>
+                                <h3>- -*--    **** **- *--- </h3>
+
+                                <a href="http://www.facebook.com" title="" class="fa-icon">
+                                    <i class="fa fa-facebook"></i>
+                                </a>
+                                <a href="http://www.twitter.com" title="" class="fa-icon">
+                                    <i class="fa fa-twitter"></i>
+                                </a>
+                                <a href="http://www.linkedin.com" title="" class="fa-icon">
+                                    <i class="fa fa-linkedin"></i>
+                                </a>
+
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block footer %}
+{% endblock %}

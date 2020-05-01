@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="section-container">
+    <div class="container">
+        {% block alcohol_items %}
+        {% endblock %}
+        <div class="row" id="alcohol_container">
+        </div>
+
+        <link href="{{ url_for('static', path='./pagination.css') }}" rel="stylesheet">
+        <div class="center">
+            <div class="pagination" id="pagination">
+                    <div class="row">
+                        <span>
+                            <a class="btn get_item_btn disabled" id="prev_link">Previous</a>
+                        </span>
+                        <span>
+                            <a class="btn get_item_btn disabled" id="next_link">Next</a>
+                        </span>
+                    </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+
+
+{% block footer %}
+{% endblock %}

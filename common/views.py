@@ -42,7 +42,6 @@ async def save_item(
         'name': name,
         'rate': rate,
         'manufacturer': manufacturer,
-        'alcohol': alcohol,
         'review': review,
         'others': others,
     }
@@ -51,14 +50,16 @@ async def save_item(
         data.update({
             'sugar': sugar,
             'style': style,
+            'alcohol': alcohol,
         })
     elif alcohol_type == 'beer':
         data.update({
             'fortress': fortress,
             'ibu': ibu,
+            'alcohol': alcohol,
         })
 
-    photo_dir = request.app.beer_photo_path
+    photo_dir = request.app.photo_path[alcohol_type]
     filenames = []
     for photo in photos:
         if photo.filename == '':
@@ -106,7 +107,8 @@ async def get_auth_link(request: Request, data: Dict[str, str]):
 async def auth(request: Request, token: str):
     urls = {
         'beer': 'add_beer',
-        'wine': 'add_wine'
+        'wine': 'add_wine',
+        'vodka': 'add_vodka'
     }
     """Метод для принятия авторизации"""
     try:
@@ -114,6 +116,7 @@ async def auth(request: Request, token: str):
     except (jwt.DecodeError, jwt.ExpiredSignatureError):
         return RedirectResponse(AUTH_SERVER_LINK)
 
-    response = RedirectResponse(request.url_for(urls[payload['section']]))
+    redirect_to = urls.get(payload['section'], '/')
+    response = RedirectResponse(request.url_for(redirect_to))
     response.set_cookie(key='Authorization', value=token)
     return response

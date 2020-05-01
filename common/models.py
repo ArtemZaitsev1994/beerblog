@@ -11,6 +11,7 @@ class Alcohol:
 
     async def get_all(self, page=1, per_page=9) -> List[Dict[str, Any]]:
         query_filter = {'not_confirmed': None}
+        print(page)
         all_qs = self.collection.find(query_filter)
         count_qs = await self.collection.count_documents(query_filter)
         has_next = count_qs > per_page * page
