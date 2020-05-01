@@ -19,7 +19,6 @@
 
   <title>Пивка - для рывка</title>  
 
-
 <link href="{{ url_for('css', path='./main.3f6952e4.css') }}" rel="stylesheet"></head>
 
 {% block header %}
@@ -59,11 +58,8 @@
   </nav>
 </header>
 
-  <!-- Add your site or app content here -->
     <div class="hero-full-container background-image-container white-text-container">
       {% block content %}
-        <!-- Add your site or app content here -->
-
       {% endblock %}
     </div>
 
@@ -74,12 +70,10 @@
   });
 </script>
 
-
 <script type="text/javascript" src="{{ url_for('js', path='./main.70a66962.js') }}"></script>
 </body>
 {% block pagination %}
 {% endblock %}
-
 
 {% block footer %}
 {% endblock %}

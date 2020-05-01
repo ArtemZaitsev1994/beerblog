@@ -2,6 +2,8 @@ from fastapi import APIRouter, Request
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
 
+from common.utils import get_items
+
 
 templates = Jinja2Templates(directory="templates")
 router = APIRouter()
@@ -21,15 +23,7 @@ async def wine_list(request: Request):
 
 @router.post('/get_wine', name='get_wine')
 async def get_wine(request: Request, page: int = 1, q: str = ''):
-    wine, pagination = await request.app.mongo['wine'].get_all(page=page)
-    for b in wine:
-        b['_id'] = str(b['_id'])
-        if not b.get('photos') or len(b['photos']['filenames']) == 0:
-            b['avatar'] = request.url_for("photo", path='./wine_default.jpg')
-        else:
-            b['avatar'] = request.url_for('photo', path=f"./wine/{b['photos']['filenames'][0]}")
-    pagination['prev_link'] = f'{request.url_for("get_wine")}?page={page-1}'
-    pagination['next_link'] = f'{request.url_for("get_wine")}?page={page+1}'
+    wine, pagination = await get_items(request, 'wine', page)
     return {'wine': wine, 'pagination': pagination}
 
 
