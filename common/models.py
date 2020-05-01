@@ -1,6 +1,7 @@
 from typing import Dict, List, Any
 
 from motor.motor_asyncio import AsyncIOMotorDatabase
+from pymongo import DESCENDING
 
 
 class Alcohol:
@@ -9,13 +10,17 @@ class Alcohol:
         self.db = db
         self.collection = NotImplementedError
 
-    async def get_all(self, page=1, per_page=9) -> List[Dict[str, Any]]:
+    async def get_all(
+        self,
+        page: int = 1,
+        sorting: tuple = ('_id', DESCENDING),
+        per_page: int = 9
+    ) -> List[Dict[str, Any]]:
         query_filter = {'not_confirmed': None}
-        print(page)
         all_qs = self.collection.find(query_filter)
         count_qs = await self.collection.count_documents(query_filter)
         has_next = count_qs > per_page * page
-        qs = await all_qs.skip((page - 1) * per_page).limit(per_page).to_list(length=None)
+        qs = await all_qs.sort(*sorting).skip((page - 1) * per_page).limit(per_page).to_list(length=None)
 
         pagination = {
             'has_next': has_next,

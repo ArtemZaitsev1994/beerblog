@@ -20,11 +20,20 @@ $(document).ready(function(){
         } else {
             page -= 1
         }
+
+        sorting = $('#sort').val()
+        data = {
+            'page': page,
+            'sorting': sorting
+        }
+
         $.ajax({
             dataType: 'json',
-            url: `/wine/get_wine?page=${page}`,
+            url: `/wine/get_wine`,
             type: 'POST',
-            // data: JSON.stringify({'page': page}),
+            data: JSON.stringify(data),
+            processData: false,
+            contentType: false,
             success: function(data) {
                 $('#alcohol_container').empty()
                 count = 1
@@ -81,4 +90,5 @@ $(document).ready(function(){
     $('.get_item_btn').on('click', showItems)
     $('#next_link').trigger('click')
 
+    $('#sort').on('change', showItems)
 })

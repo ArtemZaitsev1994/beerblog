@@ -4,8 +4,19 @@
 
 <div class="section-container">
     <div class="container">
-        {% block alcohol_items %}
-        {% endblock %}
+        <div class="row">
+            <div class="col-xs-12 col-md-12 section-container-spacer text-center">
+                {% block alcohol_items %}
+                {% endblock %}
+                <p>Сортировка:</p>
+                <select class="form-control" id="sort">
+                    <option value="time_asc">Раньше добавленные</option>
+                    <option value="time_desc">Позже добавленные</option>
+                    <option value="rate_asc">Худшие</option>
+                    <option value="rate_desc">Лучшие</option>
+                </select>
+            </div>
+        </div>
         <div class="row" id="alcohol_container">
         </div>
 

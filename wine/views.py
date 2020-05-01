@@ -1,3 +1,5 @@
+from typing import Dict, Any
+
 from fastapi import APIRouter, Request
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
@@ -22,8 +24,8 @@ async def wine_list(request: Request):
 
 
 @router.post('/get_wine', name='get_wine')
-async def get_wine(request: Request, page: int = 1, q: str = ''):
-    wine, pagination = await get_items(request, 'wine', page)
+async def get_wine(request: Request, data: Dict[str, Any]):
+    wine, pagination = await get_items(request, 'wine', data['page'], data['sorting'])
     return {'wine': wine, 'pagination': pagination}
 
 
