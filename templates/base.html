@@ -15,13 +15,12 @@
   <!-- Disable tap highlight on IE -->
   <meta name="msapplication-tap-highlight" content="no">
   
-  <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', path='./assets/apple-icon-180x180.png') }}">
-  <link href="{{ url_for('static', path='./assets/favicon.ico') }}" rel="icon">
+  <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', path='apple-icon-180x180.png') }}">
 
   <title>Пивка - для рывка</title>  
 
 
-<link href="{{ url_for('static', path='./main.3f6952e4.css') }}" rel="stylesheet"></head>
+<link href="{{ url_for('css', path='./main.3f6952e4.css') }}" rel="stylesheet"></head>
 
 {% block header %}
 {% endblock %}
@@ -33,7 +32,7 @@
 <div id="site-border-bottom"></div>
 <!-- Add your content of header -->
 <header>
-  <nav class="navbar  navbar-fixed-top navbar-inverse"  style="background-image: url('{{ url_for('static', path='./assets/images/space.jpg') }}')">
+  <nav class="navbar  navbar-fixed-top navbar-inverse"  style="background-image: url('{{ url_for('static', path='background.jpg') }}')">
     <div class="container"> 
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false">
           <span class="sr-only">Toggle navigation</span>
@@ -76,7 +75,7 @@
 </script>
 
 
-<script type="text/javascript" src="{{ url_for('static', path='./main.70a66962.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('js', path='./main.70a66962.js') }}"></script>
 </body>
 {% block pagination %}
 {% endblock %}

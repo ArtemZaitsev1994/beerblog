@@ -30,9 +30,11 @@ def set_routes(app: FastAPI):
             prefix=route.prefix,
         )
 
-    app.mount("/static", StaticFiles(directory="templates"), name="static")
+    app.mount("/templates", StaticFiles(directory="templates/"), name="templates")
+    app.mount("/css", StaticFiles(directory="templates/css"), name="css")
+    app.mount("/js", StaticFiles(directory="templates/js"), name="js")
     app.mount("/photo", StaticFiles(directory="static/photo"), name="photo")
-    app.mount("/page_404", StaticFiles(directory="static/"), name="page_404")
+    app.mount("/static", StaticFiles(directory="static/"), name="static")
 
     @app.exception_handler(StarletteHTTPException)
     async def http_not_found_handler(request: Request, exc: Exception):
