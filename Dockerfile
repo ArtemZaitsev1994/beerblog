@@ -24,5 +24,5 @@ RUN mkdir -p /app/photo && chown -R beerblog:beerblog /app/photo
 
 CMD ./start.sh
 
-# Make port 8083 available to the world outside this container
-EXPOSE 8083
+# Make port 8001 available to the world outside this container
+EXPOSE 8001

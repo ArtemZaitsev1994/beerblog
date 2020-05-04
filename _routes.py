@@ -33,7 +33,7 @@ def set_routes(app: FastAPI):
     app.mount("/templates", StaticFiles(directory="templates/"), name="templates")
     app.mount("/css", StaticFiles(directory="templates/css"), name="css")
     app.mount("/js", StaticFiles(directory="templates/js"), name="js")
-    app.mount("/photo", StaticFiles(directory="static/photo"), name="photo")
+    app.mount("/photo", StaticFiles(directory="photo/"), name="photo")
     app.mount("/static", StaticFiles(directory="static/"), name="static")
 
     @app.exception_handler(StarletteHTTPException)
