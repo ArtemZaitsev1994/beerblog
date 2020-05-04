@@ -38,5 +38,4 @@ def set_routes(app: FastAPI):
 
     @app.exception_handler(StarletteHTTPException)
     async def http_not_found_handler(request: Request, exc: Exception):
-        print(request.url)
         return templates.TemplateResponse("404.html", {"request": request})

@@ -4,11 +4,6 @@ from fastapi.applications import FastAPI
 from envparse import env
 
 
-STATIC_PATH = '/static'
-
-BASEDIR = os.path.dirname(os.path.realpath(__file__))
-PHOTO_PATH = os.path.join(BASEDIR, 'static/photo/')
-
 if os.path.isfile('.env'):
     env.read_envfile('.env')
 else:
@@ -29,7 +24,7 @@ VODKA_COLLECTION = env.str('VODKA_COLLECTION')
 def setup_app(app: FastAPI):
 
     BASEDIR = os.path.dirname(os.path.realpath(__file__))
-    PHOTO_PATH = os.path.join(BASEDIR, 'static/photo/')
+    PHOTO_PATH = os.path.join(BASEDIR, 'photo/')
 
     app.photo_path = {
         'beer': os.path.join(PHOTO_PATH, 'beer'),

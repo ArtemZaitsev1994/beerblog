@@ -60,6 +60,7 @@ async def save_item(
         })
 
     photo_dir = request.app.photo_path[alcohol_type]
+    print(photo_dir)
     filenames = []
     for photo in photos:
         if photo.filename == '':
