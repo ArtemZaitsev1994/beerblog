@@ -59,7 +59,7 @@ $(document).ready(function(){
                                 <h4>Описание</h4><p>${e.review}</p>
                                 <h4>Производитель</h4><p>${e.manufacturer}</p>
                                 <h4>Оценка</h4><p>${e.rate}</p>
-                                <h4>Примечание</h4><p>${e.others}d</p>
+                                <h4>Примечание</h4><p>${e.others}</p>
                             </div>
                         `)
                     }
