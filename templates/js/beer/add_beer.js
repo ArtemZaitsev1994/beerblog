@@ -14,6 +14,8 @@ $(document).ready(function(){
     function showSucces(mess){
         $('#error').html('');
         $('#success').html(mess);
+        $('#upload_gif').show();
+
     }
 
 
@@ -63,6 +65,7 @@ $(document).ready(function(){
             beforeSend: function(request) {
                 request.setRequestHeader("Authorization", token);
                 request.setRequestHeader("section", section);
+                $('#upload_gif').hide();
             },
             success: function(data) {
                 checkAuth(data)

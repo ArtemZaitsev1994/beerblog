@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="section-container">
+    <div class="container">
+
+
+        <div class="col-md-10 col-md-offset-1">
+                <!-- <form id="beerForm" class="reveal-content"> -->
+                    <form>
+                        <div class="row">
+
+                            <div class="col-md-5 address-container">
+                                <div class="section-container-spacer text-center">
+                                  <h4 class="h3">Контакты</h4>
+                                </div>
+                                <ul class="list-unstyled">
+                                    <li>
+                                        <span class="fa-icon">
+                                            <i class="fa fa-phone" aria-hidden="true"></i>
+                                        </span>
+                                    +7 (992) 00 88 615                        </li>
+                                    <li>
+                                        <span class="fa-icon">
+                                            <i class="fa fa-at" aria-hidden="true"></i>
+                                        </span>
+                                        artz1994@mail.ru
+                                    </li>
+                                    <li>
+                                        <span class="fa-icon">
+                                            <i class="fa fa fa-map-marker" aria-hidden="true"></i>
+                                        </span>
+                                        Улица Пушкина, Дом Колотушкина
+                                    </li>
+                                </ul>
+                                <h3>Напиши мне</h3>
+                                <h3>- -*--    **** **- *--- </h3>
+
+                                <a href="https://vk.com/artemleonzaitsev" title="" class="fa-icon">
+                                    <i class="fa fa-vk"></i>
+                                </a>
+                                <a href="https://www.instagram.com/temik.p.n/" title="" class="fa-icon">
+                                    <i class="fa fa-instagram"></i>
+                                </a>
+                                <a href="https://www.linkedin.com/in/artem-zaitsev-255102175/" title="" class="fa-icon">
+                                    <i class="fa fa-linkedin"></i>
+                                </a>
+                                <a href="https://github.com/ArtemZaitsev1994" title="" class="fa-icon">
+                                    <i class="fa fa-github"></i>
+                                </a>
+
+                                <a href="https://github.com/ArtemZaitsev1994/beerblog">Репка блога</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block footer %}
+<script type="text/javascript" src="{{ url_for('js', path='./beer/add_beer.js') }}"></script>
+{% endblock %}
+
+

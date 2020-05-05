@@ -3,16 +3,28 @@
 {% block content %}
 <div class="section-container">
     <div class="container">
-        <div class="row">
-          <div class="col-xs-12">
-            <div class="section-container-spacer text-center">
-              <h4 class="h3">Интересные статьи по теме</h4>
-            </div>
-            <a href="https://pikabu.ru/story/kak_nauchitsya_razbiratsya_v_pive_gid_dlya_nachinayushchikh_2127809">Как научиться разбираться в пиве: гид для начинающих.</a>
-            <br>
-            <a href="https://habr.com/ru/post/480274/">Как правильно пить.</a>
-          </div>
-        </div>
+
+
+        <div class="col-md-10 col-md-offset-1">
+                <!-- <form id="beerForm" class="reveal-content"> -->
+                    <form>
+                        <div class="row">
+                            <div class="col-md-7">
+                                                    
+                              <div class="col-xs-12">
+                                <div class="section-container-spacer text-center">
+                                  <h4 class="h3">Интересные статьи по теме</h4>
+                                </div>
+                                <a href="https://pikabu.ru/story/kak_nauchitsya_razbiratsya_v_pive_gid_dlya_nachinayushchikh_2127809">Как научиться разбираться в пиве: гид для начинающих.</a>
+                                <br>
+                                <a href="https://habr.com/ru/post/480274/">Как правильно пить.</a>
+                              </div>
+
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
     </div>
 </div>
 {% endblock %}
@@ -21,3 +33,5 @@
 {% block footer %}
 <script type="text/javascript" src="{{ url_for('js', path='./beer/add_beer.js') }}"></script>
 {% endblock %}
+
+

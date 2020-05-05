@@ -2,7 +2,7 @@ import os
 from typing import Dict
 
 import jwt
-from fastapi import APIRouter, Request, UploadFile, File, Form
+from fastapi import APIRouter, Request, UploadFile, Form
 from fastapi.templating import Jinja2Templates
 from starlette.responses import RedirectResponse
 from aiofile import AIOFile
@@ -19,6 +19,16 @@ router = APIRouter()
 @router.get('/', name='common')
 def beer_list(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
+
+
+@router.get('/articles', name='articles')
+async def articles(request: Request):
+    return templates.TemplateResponse("articles.html", {"request": request})
+
+
+@router.get('/contacts', name='contacts')
+async def contacts(request: Request):
+    return templates.TemplateResponse("contacts.html", {"request": request})
 
 
 @router.post('/api/save_item', name='save_item', tags=['protected'])
@@ -60,7 +70,12 @@ async def save_item(
         })
 
     photo_dir = request.app.photo_path[alcohol_type]
-    print(photo_dir)
+
+    # велосипед
+    token = request.headers['Authorization']
+    payload = jwt.decode(token, JWT_SECRET_KEY, algorithms=[JWT_ALGORITHM])
+    data['author'] = payload['login']
+
     filenames = []
     for photo in photos:
         if photo.filename == '':

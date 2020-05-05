@@ -10,7 +10,7 @@ from settings import JWT_SECRET_KEY, JWT_ALGORITHM, AUTH_SERVER_LINK
 
 class CheckUserAuthMiddleware(BaseHTTPMiddleware):
     """Миддлварь проверяет токен авторизации"""
-    async def dispatch(self, request: Request, call_next, data: Dict[str, str]=None, **kw):
+    async def dispatch(self, request: Request, call_next, data: Dict[str, str] = None, **kw):
         # проверяем только запросы к апи, тк все обращения к базе только через апи
         if not request.url.path.startswith('/api'):
             return await call_next(request)
