@@ -39,7 +39,7 @@ async def save_item(
     rate: int = Form(...),
     manufacturer: str = Form(''),
     alcohol: float = Form(''),
-    fortress: int = Form(''),
+    fortress: float = Form(''),
     style: str = Form(''),
     sugar: str = Form(''),
     ibu: int = Form(''),
@@ -68,7 +68,7 @@ async def save_item(
             'ibu': ibu,
             'alcohol': alcohol,
         })
-
+    print('data insert', data)
     photo_dir = request.app.photo_path[alcohol_type]
 
     # велосипед
