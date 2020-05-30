@@ -77,7 +77,6 @@ async def save_item(
     data['author'] = payload['login']
 
     filenames = []
-    avatar_path = ''
     for photo in photos:
         if photo.filename == '':
             break
@@ -89,6 +88,8 @@ async def save_item(
             await f.write(await photo.read())
         filenames.append(filename)
 
+    avatar_name = ''
+    if len(filenames) > 0:
         avatar_dir = os.path.join(photo_dir, "avatars/")
         if not os.path.exists(avatar_dir):
             os.makedirs(avatar_dir)
@@ -98,10 +99,11 @@ async def save_item(
         avatar = avatar.resize((h, w), Image.ANTIALIAS)
         avatar_path = os.path.join(avatar_dir, f'avatar_{filename}.png')
         avatar = avatar.save(avatar_path, quality=30)
+        avatar_name = f'avatar_{filenames[0]}.png'
 
     data['photos'] = {
         'filenames': filenames,
-        'avatar': avatar_path
+        'avatar': avatar_name
     }
     result = await request.app.mongo[alcohol_type].insert_item(data)
 
