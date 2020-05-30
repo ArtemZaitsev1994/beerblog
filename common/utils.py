@@ -24,6 +24,13 @@ async def get_items(request: Request, section: str, page: int, sorting: str = ''
             i['avatar'] = request.url_for("static", path=f'./{section}_default.jpg')
         else:
             i['avatar'] = request.url_for('photo', path=f"./{section}/{i['photos']['filenames'][0]}")
+
+        if not i.get('photos') \
+                or i['photos'].get('avatar', '') == '' \
+                or not os.path.isfile(f"photo/{section}/{i['photos']['avatar']}"):
+            i['mini_avatar'] = request.url_for("static", path=f'./{section}_default_avatar.jpg')
+        else:
+            i['mini_avatar'] = request.url_for('photo', path=f"./{section}/{i['photos']['avatar']}")
     pagination['prev_link'] = request.url_for(f'get_{section}') + f'?page={page-1}'
     pagination['next_link'] = request.url_for(f'get_{section}') + f'?page={page+1}'
 

@@ -8,6 +8,7 @@ from starlette.responses import RedirectResponse
 from aiofile import AIOFile
 from uuid import uuid4
 from typing import List
+from PIL import Image
 
 from settings import AUTH_SERVER_LINK, JWT_ALGORITHM, JWT_SECRET_KEY
 
@@ -68,7 +69,6 @@ async def save_item(
             'ibu': ibu,
             'alcohol': alcohol,
         })
-    print('data insert', data)
     photo_dir = request.app.photo_path[alcohol_type]
 
     # велосипед
@@ -77,18 +77,31 @@ async def save_item(
     data['author'] = payload['login']
 
     filenames = []
+    avatar_path = ''
     for photo in photos:
         if photo.filename == '':
             break
         filename = uuid4().hex
         if not os.path.exists(photo_dir):
             os.makedirs(photo_dir)
-        async with AIOFile(os.path.join(photo_dir, filename), 'wb') as f:
+        image_path = os.path.join(photo_dir, filename)
+        async with AIOFile(image_path, 'wb') as f:
             await f.write(await photo.read())
         filenames.append(filename)
 
+        avatar_dir = os.path.join(photo_dir, "avatars/")
+        if not os.path.exists(avatar_dir):
+            os.makedirs(avatar_dir)
+        avatar = Image.open(image_path)
+        buff_size = avatar.size[0] // 40
+        h, w = int(avatar.size[0] / buff_size), int(avatar.size[1] / buff_size)
+        avatar = avatar.resize((h, w), Image.ANTIALIAS)
+        avatar_path = os.path.join(avatar_dir, f'avatar_{filename}.png')
+        avatar = avatar.save(avatar_path, quality=30)
+
     data['photos'] = {
         'filenames': filenames,
+        'avatar': avatar_path
     }
     result = await request.app.mongo[alcohol_type].insert_item(data)
 

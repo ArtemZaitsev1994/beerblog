@@ -64,7 +64,7 @@ $(document).ready(function(){
             contentType: false,
             beforeSend: function(request) {
                 request.setRequestHeader("Authorization", token);
-                request.setRequestHeader("section", section);
+                request.setRequestHeader("section", "beer");
                 $('#upload_gif').hide();
             },
             success: function(data) {
