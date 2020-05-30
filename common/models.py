@@ -1,5 +1,6 @@
 from typing import Dict, List, Any
 
+from bson.objectid import ObjectId
 from motor.motor_asyncio import AsyncIOMotorDatabase
 from pymongo import DESCENDING
 
@@ -32,6 +33,9 @@ class Alcohol:
         }
 
         return qs, pagination
+
+    async def get_item(self, _id: str) -> Dict[str, Any]:
+        return await self.collection.find_one({'_id': ObjectId(_id)})
 
     async def get_all_documents(self):
         return await self.collection.find().to_list(length=None)

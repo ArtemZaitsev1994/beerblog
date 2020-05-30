@@ -9,7 +9,7 @@ from pydantic import BaseModel
 from starlette.graphql import GraphQLApp
 from aiofile import AIOFile
 
-from common.utils import get_items
+from common.utils import get_items, get_item
 
 
 templates = Jinja2Templates(directory="templates")
@@ -37,6 +37,12 @@ async def beer_list(request: Request):
 async def get_beer(request: Request, data: Dict[str, Any]):
     beer, pagination = await get_items(request, 'beer', data['page'], data['sorting'])
     return {'beer': beer, 'pagination': pagination}
+
+
+@router.post('/get_beer_item', name='get_beer_item')
+async def get_beer_item(request: Request, data: Dict[str, Any]):
+    beer = await get_item(request, 'beer', data['id'])
+    return {'beer': beer}
 
 
 @router.get('/add_beer', name='add_beer')
