@@ -21,7 +21,7 @@ async def get_items(request: Request, section: str, page: int, sorting: str = ''
         if not i.get('photos') \
                 or len(i['photos']['filenames']) == 0 \
                 or not os.path.isfile(f"photo/{section}/{i['photos']['filenames'][0]}"):
-            i['avatar'] = request.url_for("static", path=f'./{section}_default.jpg')
+            i['avatar'] = request.url_for("static", path=f'photo/{section}_default.jpg')
         else:
             i['avatar'] = request.url_for('photo', path=f"./{section}/{i['photos']['filenames'][0]}")
     pagination['prev_link'] = request.url_for(f'get_{section}') + f'?page={page-1}'

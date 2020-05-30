@@ -37,7 +37,6 @@ class Alcohol:
         return await self.collection.find().to_list(length=None)
 
     async def insert_item(self, data):
-        data['not_confirmed'] = True
         return await self.collection.insert_one(data)
 
     async def clear_db(self):

@@ -41,30 +41,44 @@ $(document).ready(function(){
             return
         }
 
-        var data = new FormData();
-        data.append('alcohol_type', 'beer')
-        data.append('name', $('#name').val())
-        data.append('manufacturer', $('#manufacturer').val())
-        data.append('alcohol', $('#alcohol').val())
-        data.append('fortress', $('#fortress').val())
-        data.append('rate', $('#rate').val())
-        data.append('review', $('#review').val())
-        data.append('others', $('#others').val())
-        data.append('ibu', $('#ibu').val())
+        // var data = new FormData();
+        // data.append('alcohol_type', 'beer')
+        // data.append('name', $('#name').val())
+        // data.append('manufacturer', $('#manufacturer').val())
+        // data.append('alcohol', $('#alcohol').val())
+        // data.append('fortress', $('#fortress').val())
+        // data.append('rate', $('#rate').val())
+        // data.append('review', $('#review').val())
+        // data.append('others', $('#others').val())
+        // data.append('ibu', $('#ibu').val())
+        // if ($('#photo')[0].files[0] !== undefined){
+        //     data.append('photos', $('#photo')[0].files[0])
+        // }
+        data = {
+            'alcohol_type': 'beer',
+            'name': $('#name').val(),
+            'manufacturer': $('#manufacturer').val(),
+            'alcohol': $('#alcohol').val(),
+            'fortress': $('#fortress').val(),
+            'rate': $('#rate').val(),
+            'review': $('#review').val(),
+            'others': $('#others').val(),
+            'ibu': $('#ibu').val(),
+        }
         if ($('#photo')[0].files[0] !== undefined){
-            data.append('photos', $('#photo')[0].files[0])
+            data['photos'] = $('#photo')[0].files[0]
         }
 
         $.ajax({
             dataType: 'json',
             url: '/api/save_item',
             type: 'POST',
-            data: data,
+            data:  JSON.stringify(data),
             processData: false,
             contentType: false,
             beforeSend: function(request) {
                 request.setRequestHeader("Authorization", token);
-                request.setRequestHeader("section", section);
+                request.setRequestHeader("section", 'beer');
                 $('#upload_gif').hide();
             },
             success: function(data) {

@@ -8,8 +8,8 @@ from vodka.models import Vodka
 
 
 def setup_mongo(app: FastAPI):
-    app.client = ma.AsyncIOMotorClient(MONGO_HOST)
-    app.db = app.client[MONGO_DB_NAME]
+    app.mongo_client = ma.AsyncIOMotorClient(MONGO_HOST)
+    app.db = app.mongo_client[MONGO_DB_NAME]
 
     app.mongo = {
         'beer': Beer(app.db),

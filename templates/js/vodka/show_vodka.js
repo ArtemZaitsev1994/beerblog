@@ -10,8 +10,10 @@ $(document).ready(function(){
 
         if (this.id == 'next_link') {
             page += 1
-        } else {
+        } else if(this.id == 'prev_link') {
             page -= 1
+        } else if (this.id == 'sort'){
+            page = 1
         }
 
         sorting = $('#sort').val()

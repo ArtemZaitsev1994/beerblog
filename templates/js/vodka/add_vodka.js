@@ -14,6 +14,7 @@ $(document).ready(function(){
     function showSucces(mess){
         $('#error').html('');
         $('#success').html(mess);
+        $('#upload_gif').show();
     }
 
 

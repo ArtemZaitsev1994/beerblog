@@ -22,11 +22,6 @@ class CommonResponse(BaseModel):
     error_data: str = None
 
 
-@router.get('/articles', name='articles')
-async def articles(request: Request):
-    return templates.TemplateResponse("articles.html", {"request": request})
-
-
 @router.get('/', name='beer')
 async def beer_list(request: Request):
     # await request.app.mongo['beer'].clear_db()

@@ -1,16 +1,12 @@
 {% extends 'show_items.html' %}
 
 {% block alcohol_items %}
-<div class="row">
-    <div class="col-xs-12 col-md-12 section-container-spacer text-center">
         <a href="{{ url_for('vodka') }}">
             <h2 class="text-center">Оценки</h2>
         </a>
         <a href="{{ url_for('add_vodka') }}">
             <h2 class="text-center">Добавить оценку</h2>
         </a>
-    </div>
-</div>
 {% endblock %}
 
 {% block footer %}

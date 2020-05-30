@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<script type="text/javascript" src="{{ url_for('js', path='./jquery.cookies.js') }}" defer></script>
+<script type="text/javascript" src="{{ url_for('js', path='./change_password.js') }}" defer></script>
+{% endblock %}
+
+{% block content %}
+<link href="{{ url_for('css', path='./slider.css') }}" rel="stylesheet">
+<div class="section-container">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-md-12 section-container-spacer text-center">
+                {% block nav %}
+                {% endblock %}
+            </div>
+            <h3 class="text-center">Сменить пароль</h3>
+        </div>
+
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <!-- <form id="beerForm" class="reveal-content"> -->
+                    <form>
+                        <div class="row">
+                            <div class="col-md-7">      
+
+                            <div class="form-group">
+                                <input type="password" class="form-control credantials"id="old_password" placeholder="Старый пароль">
+                            </div>
+                            <div class="form-group">
+                                <input type="password" class="form-control credantials" id="new_password" placeholder="Новый пароль">
+                            </div>
+
+
+                                <!-- <input class="btn btn-primary" id="submit" title="Отправить" type="button" value="Отправить"> -->
+
+                                <p>
+                                    <a class="btn btn-primary" id="submit" href="">Отправить</a>
+                                </p>
+                                <div id="error" style="color: red;"></div>
+                                <div id="success" style="color: green;"></div>
+
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block footer %}
+{% endblock %}
