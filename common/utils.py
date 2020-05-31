@@ -42,7 +42,7 @@ def format_item(request: Request, item: Dict[str, Any], section: str):
 
     if not item.get('photos') \
             or item['photos'].get('avatar', '') == '' \
-            or not os.path.isfile(f"photo/{section}/{item['photos']['avatar']}"):
+                or not os.path.isfile(f"photo/{section}/avatars/{item['photos']['avatar']}"):
         item['mini_avatar'] = request.url_for("static", path=f'./{section}_default_avatar.jpg')
     else:
         item['mini_avatar'] = request.url_for('photo', path=f"./{section}/avatars/{item['photos']['avatar']}")
