@@ -27,7 +27,7 @@ async def get_items(request: Request, section: str, page: int, sorting: str = ''
 
         if not i.get('photos') \
                 or i['photos'].get('avatar', '') == '' \
-                or not os.path.isfile(f"photo/{section}/{i['photos']['avatar']}"):
+                or not os.path.isfile(f"photo/{section}/avatars/{i['photos']['avatar']}"):
             i['mini_avatar'] = request.url_for("static", path=f'./{section}_default_avatar.jpg')
         else:
             i['mini_avatar'] = request.url_for('photo', path=f"./{section}/avatars/{i['photos']['avatar']}")
