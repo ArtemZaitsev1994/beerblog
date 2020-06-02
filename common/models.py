@@ -18,7 +18,7 @@ class Alcohol:
         per_page: int = 9
     ) -> List[Dict[str, Any]]:
         query_filter = {'not_confirmed': None}
-        all_qs = self.collection.find(query_filter)
+        all_qs = self.collection.find(query_filter, {'comments': 0})
         count_qs = await self.collection.count_documents(query_filter)
         has_next = count_qs > per_page * page
         qs = await all_qs.sort(*sorting).skip((page - 1) * per_page).limit(per_page).to_list(length=None)
@@ -42,7 +42,11 @@ class Alcohol:
 
     async def insert_item(self, data):
         data['not_confirmed'] = True
+        data['comments'] = []
         return await self.collection.insert_one(data)
 
     async def clear_db(self):
         await self.collection.drop()
+
+    async def add_comment(self, _id: str, comment: Dict[str, str]):
+        return await self.collection.update_one({'_id': ObjectId(_id)}, {'$push': {'comments': comment}})

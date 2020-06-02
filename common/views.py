@@ -1,5 +1,5 @@
 import os
-from typing import Dict
+from typing import Dict, Any
 
 import jwt
 from fastapi import APIRouter, Request, UploadFile, Form
@@ -150,4 +150,18 @@ async def auth(request: Request, token: str):
     redirect_to = urls.get(payload['section'], '/')
     response = RedirectResponse(request.url_for(redirect_to))
     response.set_cookie(key='Authorization', value=token)
+    return response
+
+
+@router.post('/api/add_comment', name='add_comment')
+async def add_comment(request: Request, data: Dict[str, Any]):
+    response = {
+        'success': False
+    }
+
+    alcohol_type = data.get('alcohol_type')
+    result = await request.app.mongo[alcohol_type].add_comment(data['_id'], data['comment'])
+
+    if result.acknowledged:
+        response['success'] = True
     return response
