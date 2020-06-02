@@ -165,3 +165,19 @@ async def add_comment(request: Request, data: Dict[str, Any]):
     if result.acknowledged:
         response['success'] = True
     return response
+
+
+@router.post('/api/update_rate', name='update_rate')
+async def update_rate(request: Request, data: Dict[str, Any]):
+    response = {
+        'success': False
+    }
+
+    alcohol_type = data.get('alcohol_type')
+    result, new_rate = await request.app.mongo[alcohol_type].update_rate(data['_id'], data['rate'], data['login'])
+
+    if result.acknowledged:
+        response['success'] = True
+        response['newRate'] = new_rate
+
+    return response

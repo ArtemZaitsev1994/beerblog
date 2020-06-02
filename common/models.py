@@ -50,3 +50,17 @@ class Alcohol:
 
     async def add_comment(self, _id: str, comment: Dict[str, str]):
         return await self.collection.update_one({'_id': ObjectId(_id)}, {'$push': {'comments': comment}})
+
+    async def update_rate(self, _id: str, rate: int, login: str):
+        item = await self.collection.find_one({'_id': ObjectId(_id)})
+        rates = item['rates']
+        rates[login] = rate
+        sum_rate_nums = sum([x for x in rates.values()])
+        new_rate = sum_rate_nums / len(item['rates'])
+        new_rate = round(new_rate)
+
+        result = await self.collection.update_one(
+            {'_id': ObjectId(_id)},
+            {'$set': {f'rates.{login}': rate, 'rate': new_rate}}
+        )
+        return result, new_rate
