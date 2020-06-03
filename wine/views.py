@@ -4,7 +4,7 @@ from fastapi import APIRouter, Request
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
 
-from common.utils import get_items
+from common.utils import get_items, get_item
 
 
 templates = Jinja2Templates(directory="templates")
@@ -32,3 +32,9 @@ async def get_wine(request: Request, data: Dict[str, Any]):
 @router.get('/add_wine', name='add_wine')
 async def add_wine_template(request: Request):
     return templates.TemplateResponse("wine/add_wine.html", {"request": request})
+
+
+@router.post('/get_wine_item', name='get_wine_item')
+async def get_wine_item(request: Request, data: Dict[str, Any]):
+    wine = await get_item(request, 'wine', data['id'])
+    return {'wine': wine}
