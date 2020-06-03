@@ -1,4 +1,5 @@
 from typing import Dict, List, Any
+import datetime
 
 from bson.objectid import ObjectId
 from motor.motor_asyncio import AsyncIOMotorDatabase
@@ -49,6 +50,22 @@ class Alcohol:
         await self.collection.drop()
 
     async def add_comment(self, _id: str, comment: Dict[str, str]):
+        t = datetime.datetime.now()
+        months = {
+            1: 'янв',
+            2: 'фев',
+            3: 'мар',
+            4: 'апр',
+            5: 'май',
+            6: 'июн',
+            7: 'июл',
+            8: 'авг',
+            9: 'сен',
+            10: 'окт',
+            11: 'ноя',
+            12: 'дек',
+        }
+        comment['date'] = f'{t.day} {months[t.month]} {t.year} в {t.hour}:{t.minute}'
         return await self.collection.update_one({'_id': ObjectId(_id)}, {'$push': {'comments': comment}})
 
     async def update_rate(self, _id: str, rate: int, login: str):
