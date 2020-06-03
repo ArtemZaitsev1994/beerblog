@@ -74,7 +74,10 @@ async def save_item(
     # велосипед
     token = request.headers['Authorization']
     payload = jwt.decode(token, JWT_SECRET_KEY, algorithms=[JWT_ALGORITHM])
-    data['author'] = payload['login']
+    data['postedBy'] = payload['login']
+    data['rates'] = {
+        data['postedBy']: data['rate']
+    }
 
     filenames = []
     for photo in photos:
@@ -105,6 +108,7 @@ async def save_item(
         'filenames': filenames,
         'avatar': avatar_name
     }
+
     result = await request.app.mongo[alcohol_type].insert_item(data)
 
     if result.acknowledged:
