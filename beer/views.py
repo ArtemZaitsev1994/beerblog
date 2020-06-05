@@ -9,7 +9,7 @@ from pydantic import BaseModel
 from starlette.graphql import GraphQLApp
 from aiofile import AIOFile
 
-from common.utils import get_items, get_item
+from common.utils import get_items, get_item, save_item_to_base
 
 
 templates = Jinja2Templates(directory="templates")
@@ -48,6 +48,34 @@ async def get_beer_item(request: Request, data: Dict[str, Any]):
 @router.get('/add_beer', name='add_beer')
 async def add_beer_template(request: Request):
     return templates.TemplateResponse("beer/add_beer.html", {"request": request})
+
+
+@router.post('/api/add_beer', name='add_beer', tags=['protected'])
+async def add_beer(
+    request: Request,
+    *,
+    name: str = Form(...),
+    rate: int = Form(...),
+    review: str = Form(''),
+    others: str = Form(''),
+    manufacturer: str = Form(''),
+    photos: List[UploadFile] = [],
+    alcohol: float = Form(''),
+    ibu: int = Form(''),
+    fortress: float = Form(''),
+):
+    data = {
+        'name': name,
+        'rate': rate,
+        'review': review,
+        'others': others,
+        'photos': photos,
+        'fortress': fortress,
+        'ibu': ibu,
+        'alcohol': alcohol,
+        'manufacturer': manufacturer,
+    }
+    return await save_item_to_base(request, data, 'beer')
 
 
 # class BeerDataIn(BaseModel):

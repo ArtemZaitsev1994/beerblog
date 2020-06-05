@@ -26,12 +26,6 @@ $(document).ready(function(){
         if ($('#name').val().length < 1){
             errors += 'Добавь название.<br>'
         }
-        if (isNaN(parseInt($('#alcohol').val(), 10))) {
-            errors += 'Крепость должна быть числом.<br>'
-        }
-        if (isNaN(parseInt($('#fortress').val(), 10))){
-            errors += 'Плотность должна быть числом.<br>'
-        }
         if (isNaN(parseInt($('#rate').val(), 10))){
             errors += 'Плотность должна быть числом.<br>'
         }
@@ -45,32 +39,33 @@ $(document).ready(function(){
         data.append('alcohol_type', 'beer')
         data.append('name', $('#name').val())
         data.append('manufacturer', $('#manufacturer').val())
-        data.append('alcohol', $('#alcohol').val())
-        data.append('fortress', $('#fortress').val())
+        data.append('address', $('#address').val())
+        data.append('worktime', $('#worktime').val())
         data.append('rate', $('#rate').val())
         data.append('review', $('#review').val())
         data.append('others', $('#others').val())
-        data.append('ibu', $('#ibu').val())
+        data.append('city', $('#city').val())
+        data.append('country', $('#country').val())
         if ($('#photo')[0].files[0] !== undefined){
             data.append('photos', $('#photo')[0].files[0])
         }
 
         $.ajax({
             dataType: 'json',
-            url: '/beer/api/add_beer',
+            url: '/bar/api/add_bar',
             type: 'POST',
             data: data,
             processData: false,
             contentType: false,
             beforeSend: function(request) {
                 request.setRequestHeader("Authorization", token);
-                request.setRequestHeader("section", "beer");
+                request.setRequestHeader("section", "bar");
                 $('#upload_gif').hide();
             },
             success: function(data) {
                 checkAuth(data)
                 if (data.success) {
-                    showSucces(`Пиво ${$('#name').val()} успешно добавлено.`)
+                    showSucces(`Бар ${$('#name').val()} успешно добавлено.`)
                 } else {
                     showSucces(data.message)
                 }

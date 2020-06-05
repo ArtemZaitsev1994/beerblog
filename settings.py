@@ -19,6 +19,7 @@ AUTH_SERVER_LINK = env.str('AUTH_SERVER_LINK')
 BEER_COLLECTION = env.str('BEER_COLLECTION')
 WINE_COLLECTION = env.str('WINE_COLLECTION')
 VODKA_COLLECTION = env.str('VODKA_COLLECTION')
+BAR_COLLECTION = env.str('BAR_COLLECTION')
 
 
 def setup_app(app: FastAPI):
@@ -30,4 +31,5 @@ def setup_app(app: FastAPI):
         'beer': os.path.join(PHOTO_PATH, 'beer'),
         'wine': os.path.join(PHOTO_PATH, 'wine'),
         'vodka': os.path.join(PHOTO_PATH, 'vodka'),
+        'bar': os.path.join(PHOTO_PATH, 'bar'),
     }

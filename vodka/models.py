@@ -1,10 +1,10 @@
 from motor.motor_asyncio import AsyncIOMotorDatabase
 
 from settings import VODKA_COLLECTION
-from common.models import Alcohol
+from common.models import BeerBlogItem
 
 
-class Vodka(Alcohol):
+class Vodka(BeerBlogItem):
 
     def __init__(self, db: AsyncIOMotorDatabase, **kw):
         super().__init__(db)

@@ -12,7 +12,7 @@ class CheckUserAuthMiddleware(BaseHTTPMiddleware):
     """Миддлварь проверяет токен авторизации"""
     async def dispatch(self, request: Request, call_next, data: Dict[str, str] = None, **kw):
         # проверяем только запросы к апи, тк все обращения к базе только через апи
-        if not request.url.path.startswith('/api'):
+        if '/api/' not in request.url.path:
             return await call_next(request)
 
         section = request.headers.get('section')

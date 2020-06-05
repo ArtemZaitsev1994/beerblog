@@ -7,6 +7,7 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 from beer.views import router as beer_router
 from wine.views import router as wine_router
 from vodka.views import router as vodka_router
+from bar.views import router as bar_router
 from common.views import router as common_router
 
 
@@ -19,6 +20,7 @@ routes = [
     Router(beer_router, '/beer'),
     Router(wine_router, '/wine'),
     Router(vodka_router, '/vodka'),
+    Router(bar_router, '/bar'),
     Router(common_router, ''),
 ]
 

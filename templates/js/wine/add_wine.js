@@ -58,7 +58,7 @@ $(document).ready(function(){
 
         $.ajax({
             dataType: 'json',
-            url: '/api/save_item',
+            url: '/wine/api/add_wine',
             type: 'POST',
             data: data,
             processData: false,

@@ -6,7 +6,7 @@ from motor.motor_asyncio import AsyncIOMotorDatabase
 from pymongo import DESCENDING
 
 
-class Alcohol:
+class BeerBlogItem:
 
     def __init__(self, db: AsyncIOMotorDatabase, **kw):
         self.db = db

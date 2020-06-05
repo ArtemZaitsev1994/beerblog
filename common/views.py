@@ -1,14 +1,9 @@
-import os
 from typing import Dict, Any
 
 import jwt
-from fastapi import APIRouter, Request, UploadFile, Form
+from fastapi import APIRouter, Request
 from fastapi.templating import Jinja2Templates
 from starlette.responses import RedirectResponse
-from aiofile import AIOFile
-from uuid import uuid4
-from typing import List
-from PIL import Image
 
 from settings import AUTH_SERVER_LINK, JWT_ALGORITHM, JWT_SECRET_KEY
 
@@ -32,94 +27,63 @@ async def contacts(request: Request):
     return templates.TemplateResponse("contacts.html", {"request": request})
 
 
-@router.post('/api/save_item', name='save_item', tags=['protected'])
-async def save_item(
-    request: Request,
-    *,
-    name: str = Form(...),
-    rate: int = Form(...),
-    manufacturer: str = Form(''),
-    alcohol: float = Form(''),
-    fortress: float = Form(''),
-    style: str = Form(''),
-    sugar: str = Form(''),
-    ibu: int = Form(''),
-    review: str = Form(''),
-    others: str = Form(''),
-    photos: List[UploadFile] = [],
-    alcohol_type: str = Form(...)
-):
-    data = {
-        'name': name,
-        'rate': rate,
-        'manufacturer': manufacturer,
-        'review': review,
-        'others': others,
-    }
+# # TODO распилить нормально
+# @router.post('/api/save_item', name='save_item', tags=['protected'])
+# async def save_item(
+#     request: Request,
+#     *,
+#     name: str = Form(...),
+#     rate: int = Form(...),
+#     review: str = Form(''),
+#     others: str = Form(''),
 
-    if alcohol_type == 'wine':
-        data.update({
-            'sugar': sugar,
-            'style': style,
-            'alcohol': alcohol,
-        })
-    elif alcohol_type == 'beer':
-        data.update({
-            'fortress': fortress,
-            'ibu': ibu,
-            'alcohol': alcohol,
-        })
-    photo_dir = request.app.photo_path[alcohol_type]
+#     manufacturer: str = Form(''),
+#     photos: List[UploadFile] = [],
+#     alcohol: float = Form(''),
 
-    # велосипед
-    token = request.headers['Authorization']
-    payload = jwt.decode(token, JWT_SECRET_KEY, algorithms=[JWT_ALGORITHM])
-    data['postedBy'] = payload['login']
-    data['rates'] = {
-        data['postedBy']: data['rate']
-    }
+#     ibu: int = Form(''),
+#     fortress: float = Form(''),
 
-    filenames = []
-    for photo in photos:
-        if photo.filename == '':
-            break
-        filename = uuid4().hex
-        if not os.path.exists(photo_dir):
-            os.makedirs(photo_dir)
-        image_path = os.path.join(photo_dir, filename)
-        async with AIOFile(image_path, 'wb') as f:
-            await f.write(await photo.read())
-        filenames.append(filename)
+#     style: str = Form(''),
+#     sugar: str = Form(''),
 
-    avatar_name = ''
-    if len(filenames) > 0:
-        avatar_dir = os.path.join(photo_dir, "avatars/")
-        if not os.path.exists(avatar_dir):
-            os.makedirs(avatar_dir)
-        avatar = Image.open(image_path)
-        buff_size = avatar.size[0] // 40
-        h, w = int(avatar.size[0] / buff_size), int(avatar.size[1] / buff_size)
-        avatar = avatar.resize((h, w), Image.ANTIALIAS)
-        avatar_path = os.path.join(avatar_dir, f'avatar_{filename}.png')
-        avatar = avatar.save(avatar_path, quality=30)
-        avatar_name = f'avatar_{filenames[0]}.png'
+#     address: str = Form(''),
+#     worktime: str = Form(''),
+#     city: str = Form(''),
+#     country: str = Form(''),
 
-    data['photos'] = {
-        'filenames': filenames,
-        'avatar': avatar_name
-    }
+#     item_type: str = Form(...),
+# ):
+#     data = {
+#         'name': name,
+#         'rate': rate,
+#         'review': review,
+#         'others': others,
+#         'photos': photos,
+#     }
 
-    result = await request.app.mongo[alcohol_type].insert_item(data)
-
-    if result.acknowledged:
-        response = {'success': True}
-    else:
-        response = {
-            'success': False,
-            'message': 'Insert failed at the serverside. Call Тёма, scream and run around',
-            'error_data': data
-        }
-    return response
+#     if item_type == 'wine':
+#         data.update({
+#             'sugar': sugar,
+#             'style': style,
+#             'alcohol': alcohol,
+#             'manufacturer': manufacturer,
+#         })
+#     elif item_type == 'beer':
+#         data.update({
+#             'fortress': fortress,
+#             'ibu': ibu,
+#             'alcohol': alcohol,
+#             'manufacturer': manufacturer,
+#         })
+#     elif item_type == 'bar':
+#         data.update({
+#             'address': address,
+#             'worktime': worktime,
+#             'city': city,
+#             'country': country,
+#         })
+#     return await save_item_to_base(request, data, item_type)
 
 
 @router.post('/api/check_token', name='check_token', tags=['trusted'])
