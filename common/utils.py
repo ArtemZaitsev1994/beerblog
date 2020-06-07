@@ -66,6 +66,7 @@ async def save_item_to_base(request: Request, item: Dict[str, Any], section: str
     item['rates'] = {
         item['postedBy']: item['rate']
     }
+    item['search_by_name'] = item['name'].lower()
 
     filenames = []
     for photo in item['photos']:

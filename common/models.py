@@ -19,7 +19,7 @@ class BeerBlogItem:
         sorting: tuple = ('_id', DESCENDING),
         per_page: int = 9
     ) -> List[Dict[str, Any]]:
-        query_filter = {'name': {'$regex': f'.*{query}.*'}, 'not_confirmed': None}
+        query_filter = {'search_by_name': {'$regex': f'.*{query.lower()}.*'}, 'not_confirmed': None}
         all_qs = self.collection.find(query_filter)
         count_qs = await self.collection.count_documents(query_filter)
         has_next = count_qs > per_page * page
