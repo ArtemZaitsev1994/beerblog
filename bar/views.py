@@ -52,6 +52,7 @@ async def add_bar(
     worktime: str = Form(''),
     city: str = Form(''),
     country: str = Form(''),
+    site: str = Form(''),
     photos: List[UploadFile] = [],
 ):
     data = {
@@ -63,6 +64,7 @@ async def add_bar(
         'address': address,
         'worktime': worktime,
         'city': city,
+        'site': site,
         'country': country,
     }
     return await save_item_to_base(request, data, 'bar')
