@@ -19,10 +19,10 @@ SORTING = {
 }
 
 
-async def get_items(request: Request, section: str, page: int, sorting: str = ''):
+async def get_items(request: Request, section: str, page: int, sorting: str = '', search_query: str = ''):
     sorting = SORTING.get(sorting, SORTING['time_desc'])
     page = 1 if page < 1 else page
-    items, pagination = await request.app.mongo[section].get_all(page=page, sorting=sorting)
+    items, pagination = await request.app.mongo[section].get_all(page=page, sorting=sorting, query=search_query)
     items = [format_item(request, i, section) for i in items]
 
     _url = request.url_for(f'get_{section}')

@@ -11,14 +11,17 @@ $(document).ready(function(){
 
         if (this.id == 'next_link') {
             page += 1
-        } else {
+        } else if(this.id == 'prev_link') {
             page -= 1
+        } else if (this.id == 'sort'){
+            page = 1
         }
 
         sorting = $('#sort').val()
         data = {
             'page': page,
-            'sorting': sorting
+            'sorting': sorting,
+            'section': 'beer',
         }
 
         $.ajax({
@@ -29,7 +32,43 @@ $(document).ready(function(){
             processData: false,
             contentType: false,
             success: function(data) {
-                $('#alcohol_container').empty()
+                draw_items(data)
+            }
+        })
+    }
+
+    function search(e){
+        sorting = $('#sort').text()
+        query = $('#search').val()
+        data = {
+            'page': page,
+            'alcohol_type': 'beer',
+            'sorting': sorting,
+            'query':query
+        }
+        if (query === '') {
+            page = 0
+            $('#next_link').trigger('click')
+        } else {
+            $.ajax({
+                dataType: 'json',
+                url: `/beer/get_beer`,
+                type: 'POST',
+                data: JSON.stringify(data),
+                processData: false,
+                contentType: false,
+                success: function(data) {
+                    console.log(data)
+                    draw_items(data)
+                }
+            })
+        }
+
+    }
+
+
+    function draw_items(data){
+        $('#alcohol_container').empty()
                 count = 1
                 row = []
                 for (i=0;i<3;i++) {
@@ -37,7 +76,7 @@ $(document).ready(function(){
                     for (e of elems) {
                         row.push(`
                             <div class="col-xs-12 col-md-4">
-                                <img src="${e.avatar}" alt="" class="img-responsive"  width="350" height="480">
+                                <img src="${e.avatar}" class="img-responsive"  width="350" height="480">
                                 <h3 class="text-center">${e.name}</h3>
                                     <div class="row">
                                         <div class="col-md-4">
@@ -50,10 +89,10 @@ $(document).ready(function(){
                                                     <h4>IBU</h4><p>${e.ibu}</p>
                                         </div>
                                     </div>
-                                <h4>Описание</h4><p>${e.review}</p>
-                                <h4>Производитель</h4><p>${e.manufacturer}</p>
-                                <h4>Оценка</h4><p>${e.rate}</p>
-                                <h4>Примечание</h4><p>${e.others}</p>
+                                                    <h4>Описание</h4><p>${e.review}</p>
+                                                    <h4>Производитель</h4><p>${e.manufacturer}</p>
+                                                    <h4>Оценка</h4><p>${e.rate}</p>
+                                                    <h4>Примечание</h4><p>${e.others}</p>
                             </div>
                         `)
                     }
@@ -77,10 +116,11 @@ $(document).ready(function(){
                 } else {
                     $('#next_link').addClass('disabled')
                 }
-            }
-        })
     }
 
+
+
+    $('#search').on('input', search)
     $('.get_item_btn').on('click', showItems)
     $('#next_link').trigger('click')
 

@@ -35,7 +35,7 @@ async def beer_list(request: Request):
 
 @router.post('/get_beer', name='get_beer')
 async def get_beer(request: Request, data: Dict[str, Any]):
-    beer, pagination = await get_items(request, 'beer', data['page'], data['sorting'])
+    beer, pagination = await get_items(request, 'beer', data['page'], data['sorting'], data.get('query', ''))
     return {'beer': beer, 'pagination': pagination}
 
 
