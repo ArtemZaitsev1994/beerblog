@@ -14,12 +14,13 @@ class BeerBlogItem:
 
     async def get_all(
         self,
+        query: str = '',
         page: int = 1,
         sorting: tuple = ('_id', DESCENDING),
         per_page: int = 9
     ) -> List[Dict[str, Any]]:
-        query_filter = {'not_confirmed': None}
-        all_qs = self.collection.find(query_filter, {'comments': 0})
+        query_filter = {'name': {'$regex': f'.*{query}.*'}, 'not_confirmed': None}
+        all_qs = self.collection.find(query_filter)
         count_qs = await self.collection.count_documents(query_filter)
         has_next = count_qs > per_page * page
         qs = await all_qs.sort(*sorting).skip((page - 1) * per_page).limit(per_page).to_list(length=None)

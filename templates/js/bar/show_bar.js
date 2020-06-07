@@ -6,29 +6,39 @@ $(document).ready(function(){
         $('#success').html('');
         $('#error').html(error);
     }
-    function showItems(e){
-        e.preventDefault()
 
-        if (this.id == 'next_link') {
-            page += 1
-        } else {
-            page -= 1
-        }
-
-        sorting = $('#sort').val()
+    function search(e){
+        sorting = $('#sort').text()
+        query = $('#search').val()
         data = {
             'page': page,
-            'sorting': sorting
+            'alcohol_type': 'beer',
+            'sorting': sorting,
+            'query':query
+        }
+        if (query === '') {
+            page = 0
+            $('#next_link').trigger('click')
+        } else {
+            $.ajax({
+                dataType: 'json',
+                url: `/bar/get_bar`,
+                type: 'POST',
+                data: JSON.stringify(data),
+                processData: false,
+                contentType: false,
+                success: function(data) {
+                    console.log(data)
+                    draw_items(data)
+                }
+            })
         }
 
-        $.ajax({
-            dataType: 'json',
-            url: `/bar/get_bar`,
-            type: 'POST',
-            data: JSON.stringify(data),
-            processData: false,
-            contentType: false,
-            success: function(data) {
+    }
+
+
+    function draw_items(data) {
+
                 console.log(data)
                 $('#alcohol_container').empty()
                 count = 1
@@ -61,10 +71,38 @@ $(document).ready(function(){
                 } else {
                     $('#next_link').addClass('disabled')
                 }
+    }
+
+    function showItems(e){
+        e.preventDefault()
+
+        if (this.id == 'next_link') {
+            page += 1
+        } else {
+            page -= 1
+        }
+
+        sorting = $('#sort').val()
+        data = {
+            'page': page,
+            'sorting': sorting
+        }
+
+        $.ajax({
+            dataType: 'json',
+            url: `/bar/get_bar`,
+            type: 'POST',
+            data: JSON.stringify(data),
+            processData: false,
+            contentType: false,
+            success: function(data) {
+                draw_items(data)
             }
         })
     }
 
+
+    $('#search').on('input', search)
     $('.get_item_btn').on('click', showItems)
     $('#next_link').trigger('click')
 

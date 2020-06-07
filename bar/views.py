@@ -25,7 +25,7 @@ async def bar_list(request: Request):
 
 @router.post('/get_bar', name='get_bar')
 async def get_bar(request: Request, data: Dict[str, Any]):
-    bar, pagination = await get_items(request, 'bar', data['page'], data['sorting'])
+    bar, pagination = await get_items(request, 'bar', data['page'], data['sorting'], data.get('query', ''))
     return {'bar': bar, 'pagination': pagination}
 
 
