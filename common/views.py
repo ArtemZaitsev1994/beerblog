@@ -70,7 +70,7 @@ async def add_comment(request: Request, comment: Comment):
     }
 
     alcohol_type = comment.alcohol_type
-    result = await request.app.mongo[alcohol_type].add_comment(comment._id, comment.comment)
+    result = await request.app.mongo[alcohol_type].add_comment(comment.itemId, comment.comment)
 
     if result.acknowledged:
         response['success'] = True
@@ -83,8 +83,9 @@ async def update_rate(request: Request, rating_data: ItemRating):
         'success': False
     }
 
-    alcohol_type, _id, rate, login = rating_data.alcohol_type, rating_data._id, rating_data.rate, rating_data.login
-    result, new_rate = await request.app.mongo[alcohol_type].update_rate(_id, rate, login)
+    itemId, rate, login = rating_data.itemId, rating_data.rate, rating_data.login
+    alcohol_type = rating_data.alcohol_type
+    result, new_rate = await request.app.mongo[alcohol_type].update_rate(itemId, rate, login)
 
     if result.acknowledged:
         response['success'] = True

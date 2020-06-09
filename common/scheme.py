@@ -4,13 +4,13 @@ from pydantic import BaseModel
 
 
 class Comment(BaseModel):
-    _id: str
+    itemId: str
     alcohol_type: str
     comment: Dict[str, str]
 
 
 class ItemRating(BaseModel):
-    _id: str
+    itemId: str
     alcohol_type: str
     rate: int
     login: str
