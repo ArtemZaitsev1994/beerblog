@@ -1,10 +1,9 @@
-from typing import Dict, Any, List
-
-from fastapi import APIRouter, Request, Form, UploadFile
+from fastapi import APIRouter, Request, Depends
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
 
 from common.utils import get_items, get_item, save_item_to_base
+from wine.scheme import AddWine, WineList, WineItem
 
 
 templates = Jinja2Templates(directory="templates")
@@ -23,20 +22,21 @@ async def wine_list(request: Request):
     return templates.TemplateResponse("wine/wine.html", {"request": request})
 
 
-@router.post('/get_wine', name='get_wine')
-async def get_wine(request: Request, data: Dict[str, Any]):
-    wine, pagination = await get_items(request, 'wine', data['page'], data['sorting'], data.get('query', ''))
-    return {'wine': wine, 'pagination': pagination}
-
-
 @router.get('/add_wine', name='add_wine')
 async def add_wine_template(request: Request):
     return templates.TemplateResponse("wine/add_wine.html", {"request": request})
 
 
+@router.post('/get_wine', name='get_wine')
+async def get_wine(request: Request, settings: WineList):
+    page, sorting, query = settings.page, settings.sorting, settings.query
+    wine, pagination = await get_items(request, 'wine', page, sorting, query)
+    return {'wine': wine, 'pagination': pagination}
+
+
 @router.post('/get_wine_item', name='get_wine_item')
-async def get_wine_item(request: Request, data: Dict[str, Any]):
-    wine = await get_item(request, 'wine', data['id'])
+async def get_wine_item(request: Request, wine_data: WineItem):
+    wine = await get_item(request, 'wine', wine_data.id)
     return {'wine': wine}
 
 
@@ -44,26 +44,6 @@ async def get_wine_item(request: Request, data: Dict[str, Any]):
 @router.post('/api/add_wine', name='add_wine', tags=['protected'])
 async def add_wine(
     request: Request,
-    *,
-    name: str = Form(...),
-    rate: int = Form(...),
-    review: str = Form(''),
-    others: str = Form(''),
-    manufacturer: str = Form(''),
-    photos: List[UploadFile] = [],
-    alcohol: float = Form(''),
-    style: str = Form(''),
-    sugar: str = Form(''),
+    item: AddWine = Depends(AddWine.as_form)
 ):
-    data = {
-        'name': name,
-        'rate': rate,
-        'review': review,
-        'others': others,
-        'photos': photos,
-        'sugar': sugar,
-        'style': style,
-        'alcohol': alcohol,
-        'manufacturer': manufacturer,
-    }
-    return await save_item_to_base(request, data, 'wine')
+    return await save_item_to_base(request, item, 'wine')

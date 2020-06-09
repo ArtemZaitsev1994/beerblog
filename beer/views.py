@@ -1,16 +1,9 @@
-import os
-from uuid import uuid4
-from typing import List, Dict, Any
-
-import graphene
-from fastapi import APIRouter, Request, UploadFile, File, Form, Body
+from fastapi import APIRouter, Request, Depends
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
-from starlette.graphql import GraphQLApp
-from aiofile import AIOFile
 
 from common.utils import get_items, get_item, save_item_to_base
-
+from beer.scheme import AddBeer, BeerList, BeerItem
 
 templates = Jinja2Templates(directory="templates")
 router = APIRouter()
@@ -33,128 +26,27 @@ async def beer_list(request: Request):
     return templates.TemplateResponse("beer/beer.html", {"request": request})
 
 
-@router.post('/get_beer', name='get_beer')
-async def get_beer(request: Request, data: Dict[str, Any]):
-    beer, pagination = await get_items(request, 'beer', data['page'], data['sorting'], data.get('query', ''))
-    return {'beer': beer, 'pagination': pagination}
-
-
-@router.post('/get_beer_item', name='get_beer_item')
-async def get_beer_item(request: Request, data: Dict[str, Any]):
-    beer = await get_item(request, 'beer', data['id'])
-    return {'beer': beer}
-
-
 @router.get('/add_beer', name='add_beer')
 async def add_beer_template(request: Request):
     return templates.TemplateResponse("beer/add_beer.html", {"request": request})
 
 
+@router.post('/get_beer', name='get_beer')
+async def get_beer(request: Request, settings: BeerList):
+    page, sorting, query = settings.page, settings.sorting, settings.query
+    beer, pagination = await get_items(request, 'beer', page, sorting, query)
+    return {'beer': beer, 'pagination': pagination}
+
+
+@router.post('/get_beer_item', name='get_beer_item')
+async def get_beer_item(request: Request, beer_data: BeerItem):
+    beer = await get_item(request, 'beer', beer_data.id)
+    return {'beer': beer}
+
+
 @router.post('/api/add_beer', name='add_beer', tags=['protected'])
 async def add_beer(
     request: Request,
-    *,
-    name: str = Form(...),
-    rate: int = Form(...),
-    review: str = Form(''),
-    others: str = Form(''),
-    manufacturer: str = Form(''),
-    photos: List[UploadFile] = [],
-    alcohol: float = Form(''),
-    ibu: int = Form(''),
-    fortress: float = Form(''),
+    item: AddBeer = Depends(AddBeer.as_form)
 ):
-    data = {
-        'name': name,
-        'rate': rate,
-        'review': review,
-        'others': others,
-        'photos': photos,
-        'fortress': fortress,
-        'ibu': ibu,
-        'alcohol': alcohol,
-        'manufacturer': manufacturer,
-    }
-    return await save_item_to_base(request, data, 'beer')
-
-
-# class BeerDataIn(BaseModel):
-#     name: str = Form(...)
-#     rate: int = Form(...)
-#     manufacturer: str = Form(...)
-#     alcohol: int = Form(...)
-#     fortress: int = Form(...)
-#     review: str = Form(...)
-#     others: str = Form(...)
-#     photo: List[UploadFile] = File(...)
-
-
-# @router.post('/add_beer', name='add_beer', response_model=CommonResponse)
-# async def add_beer(
-#     request: Request,
-#     *,
-#     name: str = Form(...),
-#     rate: int = Form(...),
-#     manufacturer: str = Form(''),
-#     alcohol: float = Form(''),
-#     fortress: int = Form(''),
-#     ibu: int = Form(''),
-#     review: str = Form(''),
-#     others: str = Form(''),
-#     photos: List[UploadFile] = File(None)
-# ):
-#     data = {
-#         'name': name,
-#         'rate': rate,
-#         'manufacturer': manufacturer,
-#         'alcohol': alcohol,
-#         'fortress': fortress,
-#         'review': review,
-#         'others': others,
-#         'ibu': ibu,
-#     }
-
-#     photo_dir = request.app.beer_photo_path
-#     filenames = []
-#     for photo in photos:
-#         if photo.filename == '':
-#             break
-#         filename = uuid4().hex
-#         async with AIOFile(os.path.join(photo_dir, filename), 'wb') as f:
-#             await f.write(await photo.read())
-#         filenames.append(filename)
-
-#     data['photos'] = {
-#         'filenames': filenames,
-#     }
-#     result = await request.app.mongo['beer'].insert_item(data)
-
-#     if result.acknowledged:
-#         response = {'acknowledged': True}
-#     else:
-#         response = {
-#             'acknowledged': False,
-#             'message': 'Insert failed on serverside. Call Тёма, scream and run around',
-#             'error_data': data
-#         }
-#     return response
-
-# class CreateBeer(graphene.Mutation):
-#     class Arguments:
-#         name = graphene.String()
-#         rate: int
-#         manufacturer = graphene.String()
-#         alcohol: int = None
-#         fortress: int = None
-#         review = graphene.String()
-#         others = graphene.String()
-
-
-# class Mutation(graphene.ObjectType):
-#     beer = CreateBeer.Field()
-
-#     async def resolve_addBeer(self, info, request: Request, *, data: BeerDataIn):
-#         pass
-
-
-# router.add_route('/beer_query', GraphQLApp(schema=graphene.Schema(mutation=Mutation)))
+    return await save_item_to_base(request, item.dict(), 'beer')

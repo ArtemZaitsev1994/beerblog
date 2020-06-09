@@ -1,4 +1,4 @@
-from typing import Dict, Any
+from typing import Dict, Any, List
 import os
 
 from fastapi import Request
@@ -6,9 +6,6 @@ from pymongo import ASCENDING, DESCENDING
 from aiofile import AIOFile
 from uuid import uuid4
 from PIL import Image
-import jwt
-
-from settings import JWT_ALGORITHM, JWT_SECRET_KEY
 
 
 SORTING = {
@@ -37,7 +34,7 @@ async def get_item(request: Request, section: str, _id: str):
     return format_item(request, item, section)
 
 
-def format_item(request: Request, item: Dict[str, Any], section: str):
+def format_item(request: Request, item: Dict[str, Any], section: str) -> Dict[str, Any]:
     item['_id'] = str(item['_id'])
     if not item.get('photos') \
             or len(item['photos']['filenames']) == 0 \
@@ -59,38 +56,16 @@ def format_item(request: Request, item: Dict[str, Any], section: str):
 async def save_item_to_base(request: Request, item: Dict[str, Any], section: str):
     photo_dir = request.app.photo_path[section]
 
-    # велосипед
-    token = request.headers['Authorization']
-    payload = jwt.decode(token, JWT_SECRET_KEY, algorithms=[JWT_ALGORITHM])
-    item['postedBy'] = payload['login']
+    item['postedBy'] = request.state.login
     item['rates'] = {
         item['postedBy']: item['rate']
     }
 
-    filenames = []
-    for photo in item['photos']:
-        if photo.filename == '':
-            break
-        filename = uuid4().hex
-        if not os.path.exists(photo_dir):
-            os.makedirs(photo_dir)
-        image_path = os.path.join(photo_dir, filename)
-        async with AIOFile(image_path, 'wb') as f:
-            await f.write(await photo.read())
-        filenames.append(filename)
+    filenames = await save_photos(photo_dir, item['photos'])
 
     avatar_name = ''
     if len(filenames) > 0:
-        avatar_dir = os.path.join(photo_dir, "avatars/")
-        if not os.path.exists(avatar_dir):
-            os.makedirs(avatar_dir)
-        avatar = Image.open(image_path)
-        buff_size = avatar.size[0] // 40
-        h, w = int(avatar.size[0] / buff_size), int(avatar.size[1] / buff_size)
-        avatar = avatar.resize((h, w), Image.ANTIALIAS)
-        avatar_path = os.path.join(avatar_dir, f'avatar_{filename}.png')
-        avatar = avatar.save(avatar_path, quality=30)
-        avatar_name = f'avatar_{filenames[0]}.png'
+        avatar_name = create_avatar_mini(photo_dir, filenames[0])
 
     item['photos'] = {
         'filenames': filenames,
@@ -108,3 +83,34 @@ async def save_item_to_base(request: Request, item: Dict[str, Any], section: str
             'error_data': item
         }
     return response
+
+
+def create_avatar_mini(photo_dir: str, filename: str) -> str:
+    avatar_dir = os.path.join(photo_dir, "avatars/")
+    if not os.path.exists(avatar_dir):
+        os.makedirs(avatar_dir)
+
+    avatar = Image.open(os.path.join(photo_dir, filename))
+    buff_size = avatar.size[0] // 40
+    h, w = int(avatar.size[0] / buff_size), int(avatar.size[1] / buff_size)
+    avatar = avatar.resize((h, w), Image.ANTIALIAS)
+    avatar_name = f'avatar_{filename.split("/")[-1]}.png'
+    avatar_path = os.path.join(avatar_dir, avatar_name)
+    avatar = avatar.save(avatar_path, quality=30)
+
+    return avatar_name
+
+
+async def save_photos(photo_dir: str, photos: List[Any]) -> List[str]:
+    filenames = []
+    for photo in photos:
+        if photo.filename == '':
+            break
+        filename = uuid4().hex
+        if not os.path.exists(photo_dir):
+            os.makedirs(photo_dir)
+        image_path = os.path.join(photo_dir, filename)
+        async with AIOFile(image_path, 'wb') as f:
+            await f.write(await photo.read())
+        filenames.append(filename)
+    return filenames
