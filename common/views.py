@@ -70,7 +70,7 @@ async def add_comment(request: Request, comment: Comment):
     }
 
     alcohol_type = comment.alcohol_type
-    result = await request.app.mongo[alcohol_type].add_comment(comment._id, comment.text)
+    result = await request.app.mongo[alcohol_type].add_comment(comment._id, comment.comment)
 
     if result.acknowledged:
         response['success'] = True
