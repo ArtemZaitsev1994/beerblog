@@ -9,6 +9,7 @@ from wine.views import router as wine_router
 from vodka.views import router as vodka_router
 from bar.views import router as bar_router
 from common.views import router as common_router
+from admin.views import router as admin_router
 
 
 templates = Jinja2Templates(directory="templates")
@@ -21,6 +22,7 @@ routes = [
     Router(wine_router, '/wine'),
     Router(vodka_router, '/vodka'),
     Router(bar_router, '/bar'),
+    Router(admin_router, '/admin'),
     Router(common_router, ''),
 ]
 

@@ -1,35 +1,52 @@
-from fastapi import APIRouter, Request, Depends
-from pydantic import BaseModel
+from fastapi import APIRouter, Request
 
-from common.utils import get_items, get_item, save_item_to_base
-from bar.scheme import AddBar, BarList, BarItem
-
+from admin.utils import get_items, get_item
+from admin.scheme import ItemsList, ResponseBarItem, ResponseBeerItem, ResponseWineItem, Item, ChangeStateItem
 
 router = APIRouter()
+response_models = {
+    'beer': ResponseBeerItem,
+    'wine': ResponseWineItem,
+    'bar': ResponseBarItem
+}
 
 
-class CommonResponse(BaseModel):
-    acknowledged: bool
-    message: str = None
-    error_data: str = None
+@router.post('/admin_panel_list', name='admin_panel_list')
+async def admin_panel_list(request: Request):
+    items = [
+        {'itemType': k, 'notConfirmed': await v.count_not_confirmed(), 'total': await v.count_all()}
+        for k, v
+        in request.app.mongo.items()
+    ]
+    return {'success': True, 'items': items}
 
 
-@router.post('/get_bar', name='get_bar')
-async def get_bar(request: Request, settings: BarList):
-    page, sorting, query = settings.page, settings.sorting, settings.query
-    bar, pagination = await get_items(request, 'bar', page, sorting, query)
-    return {'bar': bar, 'pagination': pagination}
+@router.post('/{item_type}', name='get_items_list')
+async def get_items_list(item_type, request: Request, settings: ItemsList):
+    response = {'success': False}
+    if item_type not in request.app.mongo:
+        response['message'] = 'Wrong item\'s type.'
+        return response
+    items, pagination = await get_items(request, item_type, **settings.dict())
+
+    return {'success': True, 'item_type': items, 'pagination': pagination}
 
 
-@router.post('/get_bar_item', name='get_bar_item')
-async def get_bar_item(request: Request, bar_data: BarItem):
-    bar = await get_item(request, 'bar', bar_data.id)
-    return {'bar': bar}
+@router.post('/{item_type}/get_item', name='admin_get_item')
+async def admin_get_item(item_type, request: Request, item: Item):
+    item = await get_item(request, item_type, item.id)
+    return response_models[item_type](**item).dict().update({'success': True})
 
 
-@router.post('/api/add_bar', name='add_bar', tags=['protected'])
-async def add_bar(
-    request: Request,
-    item: AddBar = Depends(AddBar.as_form)
-):
-    return await save_item_to_base(request, item.dict(), 'bar')
+@router.post('/{item_type}/change_item_state', name='change_item_state')
+async def change_item_state(item_type, request: Request, item: ChangeStateItem):
+    result = await request.app.mongo[item_type].change_item_state(item.id, item.not_confirmed)
+
+    if result.acknowledged:
+        response = {'success': True}
+    else:
+        response = {
+            'success': False,
+            'message': 'Error with db.'
+        }
+    return response

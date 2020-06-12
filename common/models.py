@@ -82,3 +82,50 @@ class BeerBlogItem:
             {'$set': {f'rates.{login}': rate, 'rate': new_rate}}
         )
         return result, new_rate
+
+    # ---- Adminka ----- #
+
+    async def count_not_confirmed(self):
+        return await self.collection.count_documents({'not_confirmed': True})
+
+    async def count_all(self):
+        return await self.collection.count_documents({})
+
+    async def get_items_admin(
+        self,
+        query: str = '',
+        page: int = 1,
+        sorting: tuple = ('_id', DESCENDING),
+        per_page: int = 9,
+        not_confirmed: bool = None,
+    ) -> List[Dict[str, Any]]:
+        query_filter = {
+            'search_by_name': {'$regex': f'.*{query.lower()}.*'},
+        }
+        if not_confirmed is not None:
+            query_filter['not_confirmed'] = not_confirmed if not_confirmed else None
+
+        all_qs = self.collection.find(query_filter)
+        count_qs = await self.collection.count_documents(query_filter)
+        has_next = count_qs > per_page * page
+        qs = await all_qs.sort(*sorting).skip((page - 1) * per_page).limit(per_page).to_list(length=None)
+
+        pagination = {
+            'has_next': has_next,
+            'prev': page - 1 if page > 1 else None,
+            'next': page + 1 if has_next else None,
+            'page': page,
+            'per_page': per_page,
+            'max': count_qs // per_page if count_qs % per_page == 0 else count_qs // per_page + 1
+        }
+
+        return qs, pagination
+
+    async def change_item_state(self, _id: str, not_confirmed: bool):
+        value = True if not_confirmed else None
+
+        result = await self.collection.update_one(
+            {'_id': ObjectId(_id)},
+            {'$set': {'not_confirmed': value}}
+        )
+        return result
