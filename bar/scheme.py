@@ -21,7 +21,7 @@ class AddBar(BaseModel):
         cls,
         name: str = Form(...),
         rate: int = Form(...),
-        review: str = Form(''),
+        review: str = Form(...),
         others: str = Form(''),
         address: str = Form(''),
         photos: List[UploadFile] = [],

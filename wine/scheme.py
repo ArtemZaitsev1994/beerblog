@@ -8,11 +8,11 @@ class AddWine(BaseModel):
     name: str
     rate: int
     review: str
+    style: str
+    alcohol: float
     others: str
     manufacturer: str
     photos: List[UploadFile]
-    alcohol: float
-    style: str
     sugar: str
 
     @classmethod
@@ -20,12 +20,12 @@ class AddWine(BaseModel):
         cls,
         name: str = Form(...),
         rate: int = Form(...),
-        review: str = Form(''),
+        review: str = Form(...),
+        style: str = Form(...),
+        alcohol: float = Form(...),
         others: str = Form(''),
         manufacturer: str = Form(''),
         photos: List[UploadFile] = [],
-        alcohol: float = Form(''),
-        style: str = Form(''),
         sugar: str = Form(''),
     ):
         return cls(

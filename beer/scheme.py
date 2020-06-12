@@ -8,25 +8,25 @@ class AddBeer(BaseModel):
     name: str
     rate: int
     review: str
+    alcohol: float
+    fortress: float
     others: str
     manufacturer: str
     photos: List[UploadFile]
-    alcohol: float
-    ibu: int
-    fortress: float
+    ibu: int = None
 
     @classmethod
     def as_form(
         cls,
         name: str = Form(...),
         rate: int = Form(...),
-        review: str = Form(''),
+        review: str = Form(...),
+        alcohol: float = Form(...),
+        fortress: float = Form(...),
         others: str = Form(''),
         manufacturer: str = Form(''),
         photos: List[UploadFile] = [],
-        alcohol: float = Form(''),
-        ibu: int = Form(''),
-        fortress: float = Form('')
+        ibu: int = Form(None),
     ):
         return cls(
             name=name, rate=rate, review=review,

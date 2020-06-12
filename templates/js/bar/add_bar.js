@@ -26,8 +26,8 @@ $(document).ready(function(){
         if ($('#name').val().length < 1){
             errors += 'Добавь название.<br>'
         }
-        if (isNaN(parseInt($('#rate').val(), 10))){
-            errors += 'Плотность должна быть числом.<br>'
+        if ($('#review').val().length < 1){
+            errors += 'Добавь описание.<br>'
         }
 
         if (errors){

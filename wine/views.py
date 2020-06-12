@@ -46,4 +46,4 @@ async def add_wine(
     request: Request,
     item: AddWine = Depends(AddWine.as_form)
 ):
-    return await save_item_to_base(request, item, 'wine')
+    return await save_item_to_base(request, item.dict(), 'wine')

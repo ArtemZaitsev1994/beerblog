@@ -27,14 +27,14 @@ $(document).ready(function(){
         if (isNaN(parseInt($('#alcohol').val(), 10))) {
             errors += 'Крепость должна быть числом.<br>'
         }
-        if (isNaN(parseInt($('#rate').val(), 10))){
-            errors += 'Плотность должна быть числом.<br>'
-        }
         if ($('#style').val().length < 1){
             errors += 'Не выбран вид вина.<br>'
         }
         if ($('#sugar').val().length < 1){
             errors += 'Не выбран вкус (сухое/сладкое).<br>'
+        }
+        if ($('#review').val().length < 1){
+            errors += 'Добавь описание.<br>'
         }
 
         if (errors){

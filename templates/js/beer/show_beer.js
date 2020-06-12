@@ -86,7 +86,7 @@ $(document).ready(function(){
                                                     <h4>Плотность</h4><p>${e.fortress}</p>
                                         </div>
                                         <div class="col-md-4">
-                                                    <h4>IBU</h4><p>${e.ibu}</p>
+                                                    <h4>IBU</h4><p>${e.ibu ? e.ibu : ''}</p>
                                         </div>
                                     </div>
                                                     <h4>Описание</h4><p>${e.review}</p>

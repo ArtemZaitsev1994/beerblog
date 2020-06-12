@@ -32,8 +32,8 @@ $(document).ready(function(){
         if (isNaN(parseInt($('#fortress').val(), 10))){
             errors += 'Плотность должна быть числом.<br>'
         }
-        if (isNaN(parseInt($('#rate').val(), 10))){
-            errors += 'Плотность должна быть числом.<br>'
+        if ($('#review').val().length < 1){
+            errors += 'Добавь описание.<br>'
         }
 
         if (errors){
