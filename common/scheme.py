@@ -14,3 +14,7 @@ class ItemRating(BaseModel):
     alcohol_type: str
     rate: int
     login: str
+
+
+class VersionSchema(BaseModel):
+    version: str

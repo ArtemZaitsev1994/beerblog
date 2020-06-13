@@ -33,3 +33,5 @@ def setup_app(app: FastAPI):
         'vodka': os.path.join(PHOTO_PATH, 'vodka'),
         'bar': os.path.join(PHOTO_PATH, 'bar'),
     }
+
+    app.version = '0.0.1'

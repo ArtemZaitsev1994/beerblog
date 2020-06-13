@@ -129,3 +129,6 @@ class BeerBlogItem:
             {'$set': {'not_confirmed': value}}
         )
         return result
+
+    async def delete_item(self, _id: str):
+        return await self.collection.delete_one({'_id': ObjectId(_id)})

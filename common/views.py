@@ -6,7 +6,8 @@ from fastapi.templating import Jinja2Templates
 from starlette.responses import RedirectResponse
 
 from settings import AUTH_SERVER_LINK, JWT_ALGORITHM, JWT_SECRET_KEY
-from common.scheme import Comment, ItemRating
+from common.scheme import Comment, ItemRating, VersionSchema
+from packaging.version import Version
 
 
 templates = Jinja2Templates(directory="templates")
@@ -92,3 +93,17 @@ async def update_rate(request: Request, rating_data: ItemRating):
         response['newRate'] = new_rate
 
     return response
+
+
+@router.post('/compare_version', name='compare_version')
+async def compare_version(request: Request, version: VersionSchema):
+    client_version = Version(version.version)
+    server_version = Version(request.app.version)
+
+    response_data = {
+        'curVersion': version.version,
+        'actual': request.app.version,
+        'link': 'https://cloud.mail.ru/public/HNhx/CMHg4BZGJ',
+        'isValid': not (server_version.major > client_version.major)
+    }
+    return response_data

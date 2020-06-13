@@ -50,3 +50,17 @@ async def change_item_state(item_type, request: Request, item: ChangeStateItem):
             'message': 'Error with db.'
         }
     return response
+
+
+@router.post('/{item_type}/delete_item', name='delete_item')
+async def delete_item(item_type, request: Request, item: Item):
+    result = await request.app.mongo[item_type].delete_item(item.id)
+
+    if result.deleted_count == 1:
+        response = {'success': True}
+    else:
+        response = {
+            'success': False,
+            'message': 'Error with db.'
+        }
+    return response
