@@ -29,13 +29,13 @@ async def get_items_list(item_type, request: Request, settings: ItemsList):
         return response
     items, pagination = await get_items(request, item_type, **settings.dict())
 
-    return {'success': True, 'item_type': items, 'pagination': pagination}
+    return {'success': True, 'items': items, 'pagination': pagination}
 
 
 @router.post('/{item_type}/get_item', name='admin_get_item')
 async def admin_get_item(item_type, request: Request, item: Item):
     item = await get_item(request, item_type, item.id)
-    return response_models[item_type](**item).dict().update({'success': True})
+    return response_models[item_type](**item).dict()
 
 
 @router.post('/{item_type}/change_item_state', name='change_item_state')
