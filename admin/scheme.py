@@ -26,7 +26,7 @@ class ResponseBeerItem(BaseModel):
     others: str = ''
     manufacturer: str = ''
     not_confirmed: bool = None
-    ibu: int = None
+    ibu: int = -1
 
 
 class ResponseWineItem(BaseModel):

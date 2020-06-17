@@ -13,7 +13,7 @@ class AddBeer(BaseModel):
     others: str
     manufacturer: str
     photos: List[UploadFile]
-    ibu: int = None
+    ibu: int = -1
 
     @classmethod
     def as_form(
@@ -26,7 +26,7 @@ class AddBeer(BaseModel):
         others: str = Form(''),
         manufacturer: str = Form(''),
         photos: List[UploadFile] = [],
-        ibu: int = Form(None),
+        ibu: int = Form(-1),
     ):
         return cls(
             name=name, rate=rate, review=review,
