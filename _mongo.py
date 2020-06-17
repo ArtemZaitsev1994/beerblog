@@ -6,6 +6,7 @@ from beer.models import Beer
 from wine.models import Wine
 from vodka.models import Vodka
 from bar.models import Bar
+from common.models import VersionModel
 
 
 def setup_mongo(app: FastAPI):
@@ -17,4 +18,5 @@ def setup_mongo(app: FastAPI):
         'wine': Wine(app.db),
         'vodka': Vodka(app.db),
         'bar': Bar(app.db),
+        'version': VersionModel(app.db)
     }

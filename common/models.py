@@ -4,6 +4,7 @@ import datetime
 from bson.objectid import ObjectId
 from motor.motor_asyncio import AsyncIOMotorDatabase
 from pymongo import DESCENDING
+from settings import VERSION_COLLECTION
 
 
 class BeerBlogItem:
@@ -132,3 +133,44 @@ class BeerBlogItem:
 
     async def delete_item(self, _id: str):
         return await self.collection.delete_one({'_id': ObjectId(_id)})
+
+
+class VersionModel:
+
+    def __init__(self, db: AsyncIOMotorDatabase, **kw):
+        self.db = db
+        self.collection = self.db[VERSION_COLLECTION]
+
+    async def get_current_version(self):
+        return await self.collection.find_one({'current': True})
+
+    async def get_by_version(self, v: str):
+        return await self.collection.find_one({'version': v})
+
+    async def set_current(self, v: str):
+        await self.collection.update_one(
+            {'current': True},
+            {'$set': {'current': False}}
+        )
+        await self.create_current_version(v)
+
+    async def create_current_version(self, v: str):
+        data = {
+            'version': v,
+            'current': True,
+            'changes': []
+        }
+        return await self.collection.insert_one(data)
+
+    async def get_changes_from_to(self, from_v: str, to_v: str = None):
+        if to_v is not None:
+            to_v = await self.get_by_version(to_v)
+        else:
+            to_v = await self.get_current_version()
+        from_v = await self.get_by_version(from_v)
+
+        versions = await self.collection.find(
+            {'_id': {'$lt': from_v['_id'], '$gte': to_v['_id']}}
+        ).to_list(length=None)
+
+        return [{'version': str(x['version']), 'changes': x['changes']} for x in versions]

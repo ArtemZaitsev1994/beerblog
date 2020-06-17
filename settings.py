@@ -20,6 +20,7 @@ BEER_COLLECTION = env.str('BEER_COLLECTION')
 WINE_COLLECTION = env.str('WINE_COLLECTION')
 VODKA_COLLECTION = env.str('VODKA_COLLECTION')
 BAR_COLLECTION = env.str('BAR_COLLECTION')
+VERSION_COLLECTION = env.str('VERSION_COLLECTION')
 
 
 def setup_app(app: FastAPI):
@@ -35,3 +36,9 @@ def setup_app(app: FastAPI):
     }
 
     app.version = '0.0.1'
+
+
+async def check_version(app: FastAPI):
+    version = await app.mongo['version'].get_current_version()
+    if version is None:
+        await app.mongo['version'].set_current('0.0.1')

@@ -97,13 +97,22 @@ async def update_rate(request: Request, rating_data: ItemRating):
 
 @router.post('/compare_version', name='compare_version')
 async def compare_version(request: Request, version: VersionSchema):
+
     client_version = Version(version.version)
-    server_version = Version(request.app.version)
+    current_version = await request.app.mongo['version'].get_current_version()
+    server_version = Version(current_version['version'])
+    is_valid = not (server_version.major > client_version.major)
+    need_changes = (server_version.minor > client_version.minor) or (server_version.micro > client_version.micro)
 
     response_data = {
         'curVersion': version.version,
-        'actual': request.app.version,
+        'actual': current_version['version'],
         'link': 'https://cloud.mail.ru/public/HNhx/CMHg4BZGJ',
-        'isValid': not (server_version.major > client_version.major)
+        'isValid': is_valid
     }
+
+    if not is_valid or need_changes:
+        changes = await request.app.mongo['version'].get_changes_from_to(version.version)
+        response_data['changes'] = changes
+
     return response_data
