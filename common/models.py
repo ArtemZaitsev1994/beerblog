@@ -168,12 +168,9 @@ class VersionModel:
         else:
             to_v = await self.get_current_version()
         from_v = await self.get_by_version(from_v)
-        print(to_v)
-        print(from_v)
 
         versions = await self.collection.find(
-            {'_id': {'$lt': from_v['_id'], '$gte': to_v['_id']}}
+            {'_id': {'$gt': from_v['_id'], '$lte': to_v['_id']}}
         ).to_list(length=None)
 
-        print(versions)
         return [{'version': str(x['version']), 'changes': x['changes']} for x in versions]

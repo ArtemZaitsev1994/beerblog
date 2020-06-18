@@ -2,6 +2,7 @@ from fastapi import APIRouter, Request
 
 from admin.utils import get_items, get_item
 from admin.scheme import ItemsList, ResponseBarItem, ResponseBeerItem, ResponseWineItem, Item, ChangeStateItem
+from common.models import BeerBlogItem
 
 router = APIRouter()
 response_models = {
@@ -17,7 +18,7 @@ async def admin_panel_list(request: Request):
         {'itemType': k, 'notConfirmed': await v.count_not_confirmed(), 'total': await v.count_all()}
         for k, v
         in request.app.mongo.items()
-        if  k != 'version'
+        if issubclass(v, BeerBlogItem)
     ]
     return {'success': True, 'items': items}
 
