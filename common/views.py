@@ -102,7 +102,6 @@ async def compare_version(request: Request, version: VersionSchema):
     current_version = await request.app.mongo['version'].get_current_version()
     server_version = Version(current_version['version'])
     is_valid = not (server_version.major > client_version.major)
-    need_changes = (server_version.minor > client_version.minor) or (server_version.micro > client_version.micro)
 
     response_data = {
         'curVersion': version.version,
@@ -111,7 +110,7 @@ async def compare_version(request: Request, version: VersionSchema):
         'isValid': is_valid
     }
 
-    if not is_valid or need_changes:
+    if server_version > client_version:
         changes = await request.app.mongo['version'].get_changes_from_to(version.version)
         response_data['changes'] = changes
 
