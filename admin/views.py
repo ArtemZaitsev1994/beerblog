@@ -16,7 +16,8 @@ async def admin_panel_list(request: Request):
     items = [
         {'itemType': k, 'notConfirmed': await v.count_not_confirmed(), 'total': await v.count_all()}
         for k, v
-        in request.app.mongo.items()
+        in request.app.mongo.items(),
+        if  k != 'version'
     ]
     return {'success': True, 'items': items}
 
