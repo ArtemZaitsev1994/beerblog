@@ -93,11 +93,13 @@ def create_avatar_mini(photo_dir: str, filename: str) -> str:
 
     avatar = Image.open(os.path.join(photo_dir, filename))
     buff_size = avatar.size[0] // 40
-    h, w = int(avatar.size[0] / buff_size), int(avatar.size[1] / buff_size)
-    avatar = avatar.resize((h, w), Image.ANTIALIAS)
+    w, h = int(avatar.size[0] / buff_size), int(avatar.size[1] / buff_size)
+    if w >= h:
+        avatar = avatar.rotate(90)
+    avatar = avatar.resize((w, h), Image.ANTIALIAS)
     avatar_name = f'avatar_{filename.split("/")[-1]}.png'
     avatar_path = os.path.join(avatar_dir, avatar_name)
-    avatar = avatar.save(avatar_path, quality=30)
+    avatar = avatar.save(avatar_path, quality=70)
 
     return avatar_name
 
