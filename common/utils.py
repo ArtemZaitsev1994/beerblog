@@ -95,7 +95,7 @@ def create_avatar_mini(photo_dir: str, filename: str) -> str:
     buff_size = avatar.size[0] // 40
     w, h = int(avatar.size[0] / buff_size), int(avatar.size[1] / buff_size)
     if w >= h:
-        avatar = avatar.rotate(90)
+        avatar = avatar.rotate(-90, expand=True)
     avatar = avatar.resize((w, h), Image.ANTIALIAS)
     avatar_name = f'avatar_{filename.split("/")[-1]}.png'
     avatar_path = os.path.join(avatar_dir, avatar_name)
@@ -114,6 +114,6 @@ async def save_photos(photo_dir: str, photos: List[Any]) -> List[str]:
             os.makedirs(photo_dir)
         image_path = os.path.join(photo_dir, filename)
         async with AIOFile(image_path, 'wb') as f:
-            await f.write(await photo.read())
+            await f.write(await photo.read())            
         filenames.append(filename)
     return filenames
