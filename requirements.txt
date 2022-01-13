@@ -31,7 +31,7 @@ MarkupSafe==1.1.1
 motor==2.1.0
 multidict==4.7.5
 packaging==20.4
-Pillow==7.1.2
+Pillow==9.0.0
 promise==2.3
 pydantic==1.4
 PyJWT==1.7.1
